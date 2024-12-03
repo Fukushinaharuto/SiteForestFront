@@ -12,7 +12,7 @@ RUN apt-get update && \
 
 RUN npm install react@18 react-dom@18
 
-RUN npm install axios
+
 
 RUN npm install @dnd-kit/core
 

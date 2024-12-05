@@ -1,25 +1,28 @@
 "use client"
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-import axios from "axios"
-import { useState, useEffect } from "react";
+const Top = () => {
+    const [message, setMessage] = useState<string>('');
 
-export default function Home() {
-  const [data, setData] = useState(null);
-  const testAPI = async() =>{
-    try{
-      const response = await axios.get(`http://127.0.0.1:8003/api/hello`)
-    setData(response.data.hello);
-    }catch(error){
-      console.error("apiエラー", error);
-    }
-    
-  }
-  useEffect(() => {
-    testAPI(); // コンポーネントのマウント時にAPIを呼び出す
-  }, []);
-  return (
-    <div>
-      {data}
-    </div>
-  )
+    useEffect(() => {
+        const laravelAPI = async() => {
+            try {
+                const response = await axios.get<{ message: string }>(`${process.env.NEXT_PUBLIC_API_URL}/hello`);
+                setMessage(response.data.message);
+            } catch (error) {
+                console.error("API呼び出しエラー:", error);
+                setMessage("エラーが発生しました");
+            }
+        }
+        laravelAPI();
+    }, []);
+
+    return (
+        <div>
+            {message}
+        </div>
+    )
 }
+
+export default Top;

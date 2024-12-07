@@ -35,6 +35,7 @@ const RegisterForm = () => {
                 {
                     email,
                     password,
+                    password_confirmation: passwordConfirmation,
                 }
             );
             setError('');

@@ -11,6 +11,12 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+
+        accent: "var(--accent-color)",
+        baseC: "var(--base-color)",
+        text: "var(--text-color)",
+        sub: "var(--sub-color)",
+        subPale: "var(--sub-color-hover)"
       },
     },
   },

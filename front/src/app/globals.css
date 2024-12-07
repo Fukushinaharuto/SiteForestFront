@@ -5,17 +5,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  --accent-color: #769CBF;
+  --base-color:#E6E5E4;
+  --text-color: #25271F;
+  --sub-color: #f0e68c;
+  --sub-color-hover: rgba(240, 230, 140, 0.6);
 }

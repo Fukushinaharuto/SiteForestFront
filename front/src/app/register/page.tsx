@@ -2,16 +2,16 @@ import RegisterForm from '@/components/Auth/RegisterForm';
 
 const Register = () => {
     return (
-        <div className="min-h-screen bg-baseC flex items-center justify-center">
-            <div className="max-w-xl w-full">
-                <h1 className="text-text text-4xl text-center bg-accent rounded-t-3xl shadow-md p-4">
-                    新規登録
-                </h1>
-                <div className="bg-white p-6 rounded-b-3xl shadow-md">
-                    <RegisterForm />
+            <div>
+                <h1 className="text-text text-4xl text-center border-b-8 border-accent p-10 mt-8">
+                        新規登録
+                    </h1>
+                <div className="flex items-center justify-center px-10 mt-14">
+                    <div className="p-10 rounded-3xl shadow-form mt-10 w-[700px]">
+                        <RegisterForm />
+                    </div>
                 </div>
             </div>
-        </div>
     );
 };
 

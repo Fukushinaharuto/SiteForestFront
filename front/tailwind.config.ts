@@ -9,14 +9,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-
         accent: "var(--accent-color)",
         baseC: "var(--base-color)",
         text: "var(--text-color)",
+        textLight: "var(--text-light-color)",
         sub: "var(--sub-color)",
-        subPale: "var(--sub-color-hover)"
+        subPale: "var(--sub-color-hover)",
+        error: "var(--error-color)",
+      },
+      boxShadow: {
+        'form': '0 0 10px rgba(0, 0, 0, 0.25)',
+        'input': '4px 4px 4px rgba(0, 0, 0, 0.25)',
       },
     },
   },

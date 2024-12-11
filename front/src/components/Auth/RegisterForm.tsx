@@ -2,13 +2,15 @@
 import { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
+
 
 const RegisterForm = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
     const [passwordVisibility, setPasswordVisibility] = useState(false);
-
+    const [error, setError] = useState<string>('');
     const [errors, setErrors] = useState<{ [key: string]: string[] }>({}); // 各フィールドのエラーを管理
 
     const handleRegister = async (event: React.FormEvent) => {
@@ -29,6 +31,7 @@ const RegisterForm = () => {
                 setErrors(error.response.data.errors);
             } else {
                 console.error("新規登録のエラー", error);
+                setError('もう一度、登録し直してください')
             }
         }
     };
@@ -39,10 +42,12 @@ const RegisterForm = () => {
 
     return (
         <div>
-            <form onSubmit={handleRegister}>
+            <form 
+                onSubmit={handleRegister} 
+            >
                 {/* メールアドレス入力 */}
-                <div className="relative mb-4">
-                    <label className="block text-text text-base">メールアドレス</label>
+                <div className="mb-5">
+                    <label className="block text-text text-base mb-1">メールアドレス</label>
                     <div className="relative">
                         <Image
                             src="/account.svg"
@@ -56,55 +61,60 @@ const RegisterForm = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             value={email}
                             required
-                            placeholder="user@mail.com"
-                            className={`w-full pl-10 px-3 py-2 border-2 rounded-md ${
-                                errors.email ? "border-red-500" : "border-baseC"
+                            placeholder="example@mail.com"
+                            className={`w-full pl-10 px-3 py-2 border-2 rounded-md hover:shadow-input focus:outline-none focus:border-text ${
+                                errors.email ? "border-error" : "border-baseC"
                             }`}
                         />
-                        {errors.email && (
-                            <p className="absolute left-0 top-full text-red-500 text-sm">{errors.email[0]}</p>
-                        )}
                     </div>
+                    {errors.email && (
+                        <p className="pt-2 text-error text-sm">{errors.email[0]}</p>
+                    )}
                 </div>
 
                 {/* パスワード入力 */}
-                <div className="relative mb-4">
-                    <label className="block text-text text-base">パスワード</label>
-                    <div className="relative">
-                        <Image
-                            src="/key.svg"
-                            alt="鍵アイコン"
-                            width={20}
-                            height={20}
-                            className="absolute left-3 top-1/2 transform -translate-y-1/2"
-                        />
-                        <input
-                            type={passwordVisibility ? "text" : "password"}
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
-                            required
-                            placeholder="8文字以上入力してください"
-                            className={`w-full pl-10 px-3 py-2 border-2 rounded-md ${
-                                errors.password ? "border-red-500" : "border-baseC"
-                            }`}
-                        />
-                        <button onClick={handleVisibility} type="button">
+                <div className="mb-5">
+                    
+                        <label className="block text-text text-base mb-1">パスワード</label>
+                        <div className="relative">
+                            <input
+                                type={passwordVisibility ? "text" : "password"}
+                                onChange={(e) => setPassword(e.target.value)}
+                                value={password}
+                                required
+                                placeholder="8文字以上入力してください"
+                                className={`relative w-full pl-10 px-3 py-2 border-2 rounded-md hover:shadow-input focus:outline-none focus:border-text ${
+                                    errors.password ? "border-error" : "border-baseC"
+                                }`}
+                            />
+
                             <Image
-                                src={`/visibility_${passwordVisibility ? "open" : "close"}.svg`}
-                                alt="パスワード表示切替アイコン"
+                                src="/key.svg"
+                                alt="鍵アイコン"
                                 width={20}
                                 height={20}
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                                className="absolute left-3 top-1/2 transform -translate-y-1/2"
                             />
-                        </button>
-                        {errors.password && (
-                            <p className="absolute left-0 top-full text-red-500 text-sm">{errors.password[0]}</p>
-                        )}
-                    </div>
+                            
+                            <button onClick={handleVisibility} type="button">
+                                <Image
+                                    src={`/visibility_${passwordVisibility ? "open" : "close"}.svg`}
+                                    alt="パスワード表示切替アイコン"
+                                    width={20}
+                                    height={20}
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                                />
+                            </button>
+                        </div>
+                    
+                    
+                    {errors.password && (
+                        <p className="pt-2 text-error text-sm">{errors.password[0]}</p>
+                    )}
                 </div>
 
                 {/* パスワード確認 */}
-                <div className="relative mb-6">
+                <div className="mb-6">
                     <label className="block text-text text-base">パスワードの確認</label>
                     <div className="relative">
                         <Image
@@ -115,27 +125,37 @@ const RegisterForm = () => {
                             className="absolute left-3 top-1/2 transform -translate-y-1/2"
                         />
                         <input
-                            type="password"
+                            type={passwordVisibility ? "text" : "password"}
                             onChange={(e) => setPasswordConfirmation(e.target.value)}
                             value={passwordConfirmation}
                             required
-                            className={`w-full pl-10 px-3 py-2 border-2 rounded-md ${
-                                errors.password_confirmation ? "border-red-500" : "border-baseC"
+                            placeholder="もう一度パスワードを入力してください"
+                            className={`w-full pl-10 px-3 py-2 border-2 rounded-md hover:shadow-input focus:outline-none focus:border-text ${
+                                errors.password_confirmation ? "border-error" : "border-baseC"
                             }`}
                         />
-                        {errors.password_confirmation && (
-                            <p className="absolute left-0 top-full text-red-500 text-sm">{errors.password_confirmation[0]}</p>
-                        )}
                     </div>
+                    {error && (
+                        <p className="pt-2 text-error text-sm">{error}</p>
+                    )}
                 </div>
+                <Link 
+                    prefetch href="/login"
+                    className="text-textLight border-b-[1px] border-textLight hover:opacity-60"
+                >
+                    すでにアカウントを持っている方
+                </Link>
 
                 {/* 登録ボタン */}
-                <button
-                    type="submit"
-                    className="w-full bg-sub text-text text-2xl py-2 rounded-md transition"
-                >
-                    登録
-                </button>
+                <div className="flex justify-center mt-10">
+                    <button
+                        type="submit"
+                        className="w-52 bg-sub text-white text-2xl py-2 rounded-3xl transition hover:opacity-60"
+                    >
+                        登録
+                    </button>
+                </div>
+                
             </form>
         </div>
     );

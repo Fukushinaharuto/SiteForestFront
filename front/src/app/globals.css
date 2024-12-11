@@ -3,12 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-
-  --accent-color: #769CBF;
-  --base-color:#E6E5E4;
-  --text-color: #25271F;
-  --sub-color: #f0e68c;
-  --sub-color-hover: rgba(240, 230, 140, 0.6);
+  --accent-color: #2196F3;
+  --base-color:#F5F5F5;
+  --text-color: #333333;
+  --sub-color: #FF5722;
+  --text-light-color: #808080;
+  --error-color: #ff0f0f;
 }

@@ -4,40 +4,38 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
-
+interface RegisterResponseProps {
+    email: string;
+    password: string;
+    password_confirmation: string;
+}
 const RegisterForm = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
     const [passwordVisibility, setPasswordVisibility] = useState(false);
     const [error, setError] = useState<string>('');
-    const [errors, setErrors] = useState<{ [key: string]: string[] }>({}); // 各フィールドのエラーを管理
+    const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
 
     const handleRegister = async (event: React.FormEvent) => {
         event.preventDefault();
-        setErrors({}); // エラーをリセット
-
+        setErrors({});
+        setPasswordVisibility(false);
         try {
             await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
                 email,
                 password,
                 password_confirmation: passwordConfirmation,
-            });
-            // 成功時の処理
+            } as RegisterResponseProps);
             alert("登録が完了しました！");
         } catch (error: any) {
             if (error.response?.status === 422) {
-                // バリデーションエラーをセット
                 setErrors(error.response.data.errors);
             } else {
                 console.error("新規登録のエラー", error);
                 setError('もう一度、登録し直してください')
             }
         }
-    };
-
-    const handleVisibility = () => {
-        setPasswordVisibility(!passwordVisibility);
     };
 
     return (
@@ -96,7 +94,7 @@ const RegisterForm = () => {
                                 className="absolute left-3 top-1/2 transform -translate-y-1/2"
                             />
                             
-                            <button onClick={handleVisibility} type="button">
+                            <button onClick={() => setPasswordVisibility(!passwordVisibility)} type="button">
                                 <Image
                                     src={`/visibility_${passwordVisibility ? "open" : "close"}.svg`}
                                     alt="パスワード表示切替アイコン"
@@ -141,7 +139,7 @@ const RegisterForm = () => {
                 </div>
                 <Link 
                     prefetch href="/login"
-                    className="text-textLight border-b-[1px] border-textLight hover:opacity-60"
+                    className="text-textLight underline hover:opacity-60"
                 >
                     すでにアカウントを持っている方
                 </Link>

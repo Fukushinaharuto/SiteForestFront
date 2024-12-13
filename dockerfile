@@ -10,11 +10,8 @@ RUN apt-get update && \
     apt-get install -y git && \
     rm -rf /var/lib/apt/lists/*
 
-RUN npm install react@18 react-dom@18
 
 
-
-RUN npm install @dnd-kit/core
 
 
 

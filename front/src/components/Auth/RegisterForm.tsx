@@ -1,14 +1,13 @@
 "use client"
+
 import { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { RegisterApi } from "@/api/Register";
 
-interface RegisterResponseProps {
-    email: string;
-    password: string;
-    password_confirmation: string;
-}
+
 const RegisterForm = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -16,24 +15,21 @@ const RegisterForm = () => {
     const [passwordVisibility, setPasswordVisibility] = useState(false);
     const [error, setError] = useState<string>('');
     const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
+    const route = useRouter();
 
     const handleRegister = async (event: React.FormEvent) => {
         event.preventDefault();
         setErrors({});
         setPasswordVisibility(false);
+        const loginData = { email, password, password_confirmation: passwordConfirmation };
         try {
-            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
-                email,
-                password,
-                password_confirmation: passwordConfirmation,
-            } as RegisterResponseProps);
-            alert("登録が完了しました！");
+            const response = await RegisterApi(loginData);
+            route.push('/login');
         } catch (error: any) {
-            if (error.response?.status === 422) {
-                setErrors(error.response.data.errors);
+            if (error?.status === 422 && error.data?.errors) {
+                setErrors(error.data.errors);
             } else {
-                console.error("新規登録のエラー", error);
-                setError('もう一度、登録し直してください')
+                setErrors({ passwordConfirmation: ['もう一度、登録し直してください'] })
             }
         }
     };
@@ -66,7 +62,7 @@ const RegisterForm = () => {
                         />
                     </div>
                     {errors.email && (
-                        <p className="pt-2 text-error text-sm">{errors.email[0]}</p>
+                        <p className="pt-2 text-error text-xs">{errors.email[0]}</p>
                     )}
                 </div>
 
@@ -107,7 +103,7 @@ const RegisterForm = () => {
                     
                     
                     {errors.password && (
-                        <p className="pt-2 text-error text-sm">{errors.password[0]}</p>
+                        <p className="pt-2 text-error text-xs">{errors.password[0]}</p>
                     )}
                 </div>
 
@@ -133,8 +129,8 @@ const RegisterForm = () => {
                             }`}
                         />
                     </div>
-                    {error && (
-                        <p className="pt-2 text-error text-sm">{error}</p>
+                    {errors.password_confirmation && (
+                        <p className="pt-2 text-error text-xs">{errors.password_confirmation[0]}</p>
                     )}
                 </div>
                 <Link 

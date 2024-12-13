@@ -2,19 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import axios from "axios";
 import { useState } from "react"
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { LoginApi } from "@/api/Login";
 
-interface LoginResponseProps {
-    token: string;
-    success: string;
-    message?: string;
-}
-
-interface LoginRequestProps {
-    email: string;
-    password: string;
-}
 
 
 
@@ -23,24 +15,28 @@ const LoginForm = () => {
     const [password, setPassword] = useState<string>('');
     const [passwordVisibility, setPasswordVisibility] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
+    const route = useRouter();
 
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
         setErrors({});
         setPasswordVisibility(false);
+        const loginData = { email, password };
         try {
-            const response = await axios.post<LoginResponseProps>(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
-                email,
-                password,
-            } as LoginRequestProps);
-            localStorage.setItem('AuthToken', response.data.token);
-            localStorage.setItem('success', response.data.success);
+            const response = await LoginApi(loginData);
+            if (response.token) {
+                Cookies.set('AuthToken', response.token, {
+                    secure: true,
+                    sameSite: 'Lax',
+                    expires: 10,
+                    path: '/'
+                });
+                route.push('/home')
+            }
         } catch (error: any) {
-            if (error.response?.status === 422) {
-                
-                setErrors(error.response.data.errors);
+            if (error?.status === 422 && error.data?.errors) {
+                setErrors(error.data.errors);
             } else {
-                console.error("ログインのエラー", error);
                 setErrors({ password: ['メールアドレスまたはパスワードが正しくありません。'] })
             }
         }
@@ -74,7 +70,7 @@ const LoginForm = () => {
                         />
                     </div>
                     {errors.email && (
-                        <p className="pt-2 text-error text-sm">{errors.email[0]}</p>
+                        <p className="pt-2 text-error text-xs">{errors.email[0]}</p>
                     )}
                 </div>
 
@@ -112,7 +108,7 @@ const LoginForm = () => {
                         </button>
                     </div>
                     {errors.password && (
-                        <p className="pt-2 text-error text-sm">{errors.password[0]}</p>
+                        <p className="pt-2 text-error text-xs">{errors.password[0]}</p>
                     )}
                 </div>
                 <div className="space-y-2 mt-2">

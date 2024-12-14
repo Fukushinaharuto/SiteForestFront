@@ -20,8 +20,8 @@ export const RegisterApi = async ({
             password_confirmation: password_confirmation,
         });
         return response.data;
-    } catch (error: any) {
-        if (error.response) {
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
             throw error.response;
         }
         throw error;

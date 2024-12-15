@@ -1,4 +1,5 @@
 import Shape from "@/components/parts/Shapes";
+import { Draggable } from '@/components/dnd-kit/Draggable';
 
 const LeftSide = () => {
     return(
@@ -8,7 +9,9 @@ const LeftSide = () => {
                 <ul className="mt-4 space-y-2">
                     <li>
                         <div>
-                            <Shape type="square" size={100} color="#3498db" />
+                            <Draggable>
+                                <Shape type="square" size={100} color="#3498db" />
+                            </Draggable>
                         </div>
                     </li>
                     <li>メニュー2</li>

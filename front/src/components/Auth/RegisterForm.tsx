@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { RegisterApi } from "@/api/Register";
 
 
-const RegisterForm = () => {
+export function RegisterForm() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
@@ -154,5 +154,3 @@ const RegisterForm = () => {
         </div>
     );
 };
-
-export default RegisterForm;

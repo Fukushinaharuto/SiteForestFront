@@ -1,23 +1,20 @@
-"use client"
 interface ShapeProps {
     type: "square" | "circle" | "ellipse";
-    size: number; // サイズ (px)
-    color: string; // 背景色
+    size: number;
+    color: string;
 }
 
-const Shape: React.FC<ShapeProps> = ({ type, size, color }) => {
+export function Shape({ type, size, color }: ShapeProps): JSX.Element{
     let shapeStyles = "";
-
-    // 図形の種類に応じたスタイルを設定
     switch (type) {
         case "square":
-            shapeStyles = "rounded-none"; // 四角形
+            shapeStyles = "rounded-none";
             break;
         case "circle":
-            shapeStyles = "rounded-full"; // 円形
+            shapeStyles = "rounded-full";
             break;
         case "ellipse":
-            shapeStyles = "rounded-full h-[80%]"; // 楕円形
+            shapeStyles = "rounded-full h-[80%]";
             break;
         default:
             shapeStyles = "";
@@ -35,4 +32,4 @@ const Shape: React.FC<ShapeProps> = ({ type, size, color }) => {
     );
 };
 
-export default Shape;
+

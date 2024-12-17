@@ -1,6 +1,6 @@
-import RegisterForm from '@/components/Auth/RegisterForm';
+import { RegisterForm } from '@/components/Auth/RegisterForm';
 
-const Register = () => {
+export default function Register() {
     return (
             <div>
                 <h1 className="text-text text-4xl text-center border-b-8 border-accent p-10 mt-8">
@@ -15,4 +15,3 @@ const Register = () => {
     );
 };
 
-export default Register;

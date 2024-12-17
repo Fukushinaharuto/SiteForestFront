@@ -1,7 +1,7 @@
-import Shape from "@/components/parts/Shapes";
+import { Shape }  from "@/components/parts/Shapes";
 import { Draggable } from '@/components/dnd-kit/Draggable';
 
-const LeftSide = () => {
+export function LeftSide(){
     return(
         <div>
             <div className="w-1/6 bg-gray-800 text-white p-4 fixed top-0 left-0 h-screen z-10">
@@ -9,7 +9,7 @@ const LeftSide = () => {
                 <ul className="mt-4 space-y-2">
                     <li>
                         <div>
-                            <Draggable>
+                            <Draggable id="draggable-square">
                                 <Shape type="square" size={100} color="#3498db" />
                             </Draggable>
                         </div>
@@ -22,4 +22,3 @@ const LeftSide = () => {
         </div>
     )
 }
-export default LeftSide;

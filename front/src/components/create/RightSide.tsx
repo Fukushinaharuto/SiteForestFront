@@ -1,6 +1,19 @@
-"use client";
+interface RightSideProps {
+    selectedItem?: {
+        id: string;
+        color: string;
+        size: number;
+    };
+    onPropertyChange: (property: 'color' | 'size', value: string | number) => void;
+}
 
-const RightSide = ({ selectedItem, onPropertyChange }) => {
+export function RightSide({ selectedItem, onPropertyChange }:RightSideProps){
+
+    const  handleSizeChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const inputValue = parseInt(e.target.value);
+        const adjustedValue = Math.round(inputValue / 5) * 5
+        onPropertyChange('size', adjustedValue)
+    }
     return (
         <div className="w-1/6 bg-gray-800 text-white p-4 fixed top-0 right-0 h-screen z-10">
             <h2 className="text-lg font-bold">右サイドバー</h2>
@@ -20,7 +33,9 @@ const RightSide = ({ selectedItem, onPropertyChange }) => {
                         <input
                             type="number"
                             value={selectedItem.size}
-                            onChange={(e) => onPropertyChange("size", parseInt(e.target.value))}
+                            step={5}
+                            min={5} 
+                            onChange={(handleSizeChange)}
                             className="w-full p-1 text-black"
                         />
                     </div>
@@ -31,5 +46,3 @@ const RightSide = ({ selectedItem, onPropertyChange }) => {
         </div>
     );
 };
-
-export default RightSide;

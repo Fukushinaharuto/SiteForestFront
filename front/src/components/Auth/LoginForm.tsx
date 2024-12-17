@@ -10,7 +10,7 @@ import { LoginApi } from "@/api/Login";
 
 
 
-const LoginForm = () => {
+export function LoginForm() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordVisibility, setPasswordVisibility] = useState(false);
@@ -141,5 +141,3 @@ const LoginForm = () => {
         </div>
     );
 };
-
-export default LoginForm;

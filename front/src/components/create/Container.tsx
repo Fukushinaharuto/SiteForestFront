@@ -1,10 +1,11 @@
 import { Rnd } from "react-rnd";
-import { Shape } from "@/components/parts/Shapes";
+import { Polygon } from "@/components/parts/Polygon";
+import { Square } from "@/components/parts/Square";
+import { Circle } from "@/components/parts/Circle";
 import { RoundToGrid } from "@/components/create/RoundToGrid";
 
 export interface Item {
     id: string;
-    type: "square" | "circle" | "ellipse";
     size: number;
     color: string;
     x: number;
@@ -79,7 +80,44 @@ export function Container({ items, onItemClick, onUpdateItemPosition }: Containe
                     className="absolute cursor-pointer"
                 >
                     <div onClick={() => onItemClick(item, index)}>
-                        <Shape type={item.type} size={item.size} color={item.color} />
+                    {item.id === "polygon" && 
+                        <Polygon 
+                            width={50}
+                            height={50}
+                            color="#3498db"
+                            border={0}
+                            borderColor=""
+                            opacity={100}
+                            sides={5}
+                            angleOffset={0} 
+                        />
+                    }
+                    {item.id === "square" && 
+                        <Square 
+                            width={50}
+                            height={50}
+                            radiusTopLeft={0}
+                            radiusTopRight={0}
+                            radiusBottomLeft={0}
+                            radiusBottomRight={0}
+                            color="#3498db"
+                            border={0}
+                            borderColor=""
+                            opacity={100}
+                            angle={0}
+                        />
+                    }
+                    {item.id === "circle" && 
+                        <Circle 
+                            width={50}
+                            height={50}
+                            color="#3498db"
+                            border={0}
+                            borderColor=""
+                            opacity={100}
+                            angle={0}
+                        />
+                    }
                     </div>
                 </Rnd>
             ))}

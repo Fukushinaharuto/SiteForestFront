@@ -5,13 +5,15 @@ import { LeftSide } from "@/components/create/LeftSide";
 import { RightSide } from "@/components/create/RightSide";
 import { Container,  Item } from "@/components/create/Container";
 import { DndContext, DragOverlay } from "@dnd-kit/core";
-import { Droppable } from "@/components/dnd-kit/Droppable";
-import { Shape } from "@/components/parts/Shapes";
+import { Droppable } from "@/components/create/dnd/Droppable";
+import { Polygon } from "@/components/parts/Polygon";
+import { Square } from "@/components/parts/Square";
+import { Circle } from "@/components/parts/Circle";
 import { UpdateItemPosition } from "@/api/Page"
 import { DragStartEvent, DragEndEvent } from "@dnd-kit/core";
 import { RoundToGrid } from "@/components/create/RoundToGrid";
 
-export default function MypageCreate() {
+export default function Page() {
     const [droppedItems, setDroppedItems] = useState<Item[]>([]);
     const [isLeftSideOpen, setIsLeftSideOpen] = useState(true);
     const [isRightSideOpen, setIsRightSideOpen] = useState(true);
@@ -30,46 +32,33 @@ export default function MypageCreate() {
         });
     };
 
-    const handleDragEnd = (event:DragEndEvent) => {
+    const handleDragEnd = (event: DragEndEvent) => {
         setIsLeftSideOpen(true);
         setIsRightSideOpen(true);
         setActiveDragItem(null);
-
-        const { over, delta, active } = event;
-
-        if (over && over.id === "droppable") {
+    
+        const { over, active } = event;
+    
+        if (over?.id === "droppable") {
             const container = document.getElementById("droppable-container");
-            const containerRect = container.getBoundingClientRect();
-
-            const initialX = active.rect.current.initial.left;
-            const initialY = active.rect.current.initial.top;
-            const finalX = initialX + delta.x + initialScroll.x;
-            const finalY = initialY + delta.y + initialScroll.y;
-
-            const itemSize = 100;
-
-            if (
-                finalX < containerRect.left ||
-                finalY < containerRect.top ||
-                finalX + itemSize > containerRect.right ||
-                finalY + itemSize > containerRect.bottom
-            ) {
-                return;
-            }
-
+            const containerRect = container?.getBoundingClientRect();
+    
+            if (!container || !containerRect) return;
+    
+            const finalX = RoundToGrid(active.rect.current.translated?.left - containerRect.left, 5);
+            const finalY = RoundToGrid(active.rect.current.translated?.top - containerRect.top, 5);
+    
             setDroppedItems((prevItems) => [
                 ...prevItems,
                 {
                     id: active.id,
-                    type: "square",
-                    size: itemSize,
-                    color: "#3498db",
-                    x: RoundToGrid(finalX, 5),
-                    y: RoundToGrid(finalY, 5),
+                    x: finalX,
+                    y: finalY,
                 } as Item,
             ]);
         }
     };
+    
 
     const handleItemClick = (item, index) => {
         setSelectedItem({ ...item, index });
@@ -98,7 +87,7 @@ export default function MypageCreate() {
         <div>
             <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
                 {isLeftSideOpen && <LeftSide />}
-                <Droppable>
+                <Droppable id="droppable">
                     <div id="droppable-container" className="w-full h-full relative">
                         <Container
                             items={droppedItems}
@@ -108,7 +97,44 @@ export default function MypageCreate() {
                     </div>
                 </Droppable>
                 <DragOverlay>
-                    {activeDragItem ? <Shape type="square" size={100} color="#3498db" /> : null}
+                    {activeDragItem === "polygon" && (
+                        <Polygon
+                            width={50}
+                            height={50}
+                            color="#3498db"
+                            border={0}
+                            borderColor=""
+                            opacity={100}
+                            sides={5}
+                            angleOffset={0}
+                        />
+                    )}
+                    {activeDragItem === "square" && (
+                        <Square
+                            width={50}
+                            height={50}
+                            radiusTopLeft={0}
+                            radiusTopRight={0}
+                            radiusBottomLeft={0}
+                            radiusBottomRight={0}
+                            color="#3498db"
+                            border={0}
+                            borderColor=""
+                            opacity={100}
+                            angle={0}
+                        />
+                    )}
+                    {activeDragItem === "circle" && (
+                        <Circle
+                            width={50}
+                            height={50}
+                            color="#3498db"
+                            border={0}
+                            borderColor=""
+                            opacity={100}
+                            angle={0}
+                        />
+                    )}
                 </DragOverlay>
             </DndContext>
             {isRightSideOpen && (

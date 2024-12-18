@@ -1,6 +1,6 @@
 import { RegisterForm } from '@/components/Auth/RegisterForm';
 
-export default function Register() {
+export default function Page() {
     return (
             <div>
                 <h1 className="text-text text-4xl text-center border-b-8 border-accent p-10 mt-8">

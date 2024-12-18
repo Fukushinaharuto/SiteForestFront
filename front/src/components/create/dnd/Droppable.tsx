@@ -13,7 +13,7 @@ export function Droppable(props:DroppableProps) {
     const style: React.CSSProperties = {
         border: "2px dashed #ccc",
         backgroundColor: isOver ? "#f0f8ff" : "#fff",
-        height: "2000px",
+        height: "3000px",
         width: "100%",
         position: "relative",
     };

@@ -8,7 +8,7 @@ export interface DraggableProps {
 
 export function Draggable(props:DraggableProps) {
     const {attributes, listeners, setNodeRef, transform} = useDraggable({
-        id: 'draggable-square',
+        id: props.id,
     });
     const style = transform ? {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,

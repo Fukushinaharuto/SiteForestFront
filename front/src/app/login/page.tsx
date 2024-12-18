@@ -1,6 +1,6 @@
-import LoginForm from "@/components/Auth/LoginForm";
+import { LoginForm } from "@/components/Auth/LoginForm";
 
-export default function Login() {
+export default function Page() {
     return(
         <div>
             <h1 className="text-text text-4xl text-center border-b-8 border-accent p-10 mt-8">

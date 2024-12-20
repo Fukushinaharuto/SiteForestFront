@@ -1,4 +1,4 @@
-interface PolygonProps {
+export interface PolygonProps {
     width: number;
     height: number;
     color: string;

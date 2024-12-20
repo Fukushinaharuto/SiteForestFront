@@ -1,4 +1,6 @@
-export interface  UpdateItemPosition{
+import { DragStartEvent, DragEndEvent, UniqueIdentifier } from "@dnd-kit/core";
+
+export interface  UpdateItemPosition {
     index:number;
     x: number,
     y: number,

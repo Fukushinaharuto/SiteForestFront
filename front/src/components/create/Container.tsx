@@ -37,40 +37,40 @@ export function Container({items}:ContainerProps){
                     <div>
                         {item.type === "polygon" && 
                             <Polygon 
-                                width={50}
-                                height={50}
-                                color="#3498db"
-                                border={0}
-                                borderColor=""
-                                opacity={100}
-                                sides={5}
-                                angleOffset={0} 
+                                width={item.width}
+                                height={item.height}
+                                color={item.color}
+                                border={item.border}
+                                borderColor={item.borderColor}
+                                opacity={item.opacity}
+                                sides={item.sides}
+                                angleOffset={item.angleOffset} 
                             />
                         }
                         {item.type === "square" && 
                             <Square 
-                                width={50}
-                                height={50}
-                                radiusTopLeft={0}
-                                radiusTopRight={0}
-                                radiusBottomLeft={0}
-                                radiusBottomRight={0}
-                                color="#3498db"
-                                border={0}
-                                borderColor=""
-                                opacity={100}
-                                angle={0}
+                                width={item.width}
+                                height={item.height}
+                                radiusTopLeft={item.radiusTopLeft}
+                                radiusTopRight={item.radiusTopRight}
+                                radiusBottomLeft={item.radiusBottomLeft}
+                                radiusBottomRight={item.radiusBottomRight}
+                                color={item.color}
+                                border={item.border}
+                                borderColor={item.borderColor}
+                                opacity={item.opacity}
+                                angle={item.angle}
                             />
                         }
                         {item.type === "circle" && 
                             <Circle 
-                                width={50}
-                                height={50}
-                                color="#3498db"
-                                border={0}
-                                borderColor=""
-                                opacity={100}
-                                angle={0}
+                                width={item.width}
+                                height={item.height}
+                                color={item.color}
+                                border={item.border}
+                                borderColor={item.borderColor}
+                                opacity={item.opacity}
+                                angle={item.angle}
                             />
                         }
                     </div>

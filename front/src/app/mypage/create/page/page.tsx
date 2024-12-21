@@ -6,7 +6,6 @@ import { RightSide } from "@/components/create/RightSide";
 import { Container } from "@/components/create/Container";
 import { DndContext } from "@dnd-kit/core";
 import { Droppable } from "@/components/create/dnd/Droppable";
-import { DroppedItems } from "@/components/create/ItemsCase"
 import { DragStartEvent, DragEndEvent, UniqueIdentifier } from "@dnd-kit/core";
 import { DroppedArea } from "@/components/create/DroppedArea"
 import { DragOver } from "@/components/create/DragOver";
@@ -56,8 +55,7 @@ export default function Page() {
                     <div id="droppable-container" className="w-full h-full relative">
                         <Container
                             items={droppedItems}
-                        >
-                            
+                        >    
                         </Container>
                     </div>
                 </Droppable>
@@ -65,10 +63,10 @@ export default function Page() {
                     activeDragItem={activeDragItem}
                 />
             </DndContext>
-            {/* {isRightSideOpen && (
-                // <RightSide
-                // />
-            )} */}
+            {isRightSideOpen && (
+                <RightSide
+                />
+            )}
         </div>
     );
 }

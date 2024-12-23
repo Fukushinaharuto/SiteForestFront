@@ -1,2 +1,4 @@
-export const RoundToGrid = (value: number, gridSize: number) =>
-    Math.round(value / gridSize) * gridSize;
+export function RoundToGrid(value: number, gridSize: number): number {
+    return Math.round(value / gridSize) * gridSize;
+}
+    

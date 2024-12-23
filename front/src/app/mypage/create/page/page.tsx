@@ -44,6 +44,22 @@ export default function Page() {
             }
         }
     };
+
+    const handleItemUpdate = (
+        id: string,
+        x: number,
+        y: number,
+        width?: number,
+        height?: number
+    ) => {
+        setDroppedItems((prevItems) =>
+            prevItems.map((item) =>
+                item.id === id
+                    ? { ...item, x, y, ...(width && { width }), ...(height && { height }) }
+                    : item
+            )
+        );
+    }
     
 
 
@@ -55,8 +71,8 @@ export default function Page() {
                     <div id="droppable-container" className="w-full h-full relative">
                         <Container
                             items={droppedItems}
-                        >    
-                        </Container>
+                            onItemUpdate={handleItemUpdate}
+                        />    
                     </div>
                 </Droppable>
                 <DragOver

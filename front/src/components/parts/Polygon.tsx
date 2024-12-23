@@ -9,7 +9,7 @@ export interface PolygonProps {
     angleOffset: number;
 }
 
-export function Polygon({ width, height, color, border, borderColor, opacity, sides, angleOffset=0 }: PolygonProps): JSX.Element {
+export function Polygon({ width, height, color, border, borderColor, opacity, sides, angleOffset }: PolygonProps): JSX.Element {
     const generatePolygonPoints = (sides: number, angleOffset: number): string => {
         const points: string[] = [];
         const angleStep = (2 * Math.PI) / sides;

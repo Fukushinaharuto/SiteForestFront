@@ -17,6 +17,7 @@ export default function Page() {
     const [isLeftSideOpen, setIsLeftSideOpen] = useState(true);
     const [isRightSideOpen, setIsRightSideOpen] = useState(true);
     const [activeDragItem, setActiveDragItem] = useState<UniqueIdentifier | null>(null);
+    const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
     const handleDragStart = (event:DragStartEvent) => {
         setIsLeftSideOpen(false);
@@ -61,6 +62,16 @@ export default function Page() {
         );
     }
     
+    const selectedItem = droppedItems.find((item) => item.id === selectedItemId);
+
+    const handlePropertyChange = (property: string, value: any) => {
+        if (!selectedItemId) return;
+        setDroppedItems((prevItems) =>
+            prevItems.map((item) =>
+                item.id === selectedItemId ? { ...item, [property]: value } : item
+            )
+        );
+    };
 
 
     return (
@@ -72,6 +83,8 @@ export default function Page() {
                         <Container
                             items={droppedItems}
                             onItemUpdate={handleItemUpdate}
+                            selectedItemId={selectedItemId}
+                            setSelectedItemId={setSelectedItemId}
                         />    
                     </div>
                 </Droppable>
@@ -81,6 +94,8 @@ export default function Page() {
             </DndContext>
             {isRightSideOpen && (
                 <RightSide
+                    selectedItem={selectedItem}
+                    onPropertyChange={handlePropertyChange}
                 />
             )}
         </div>

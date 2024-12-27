@@ -4,7 +4,6 @@ import { Square } from "@/components/parts/Square";
 import { Circle } from "@/components/parts/Circle";
 import { RoundToGrid } from "@/components/create/RoundToGrid";
 import { PolygonItems, SquareItems, CircleItems } from "@/components/create/ItemsCase"
-import { useState } from "react";
 
 export interface ContainerProps {
     items: (PolygonItems | SquareItems | CircleItems)[];
@@ -17,27 +16,23 @@ export interface ContainerProps {
         angle?: number,
         borderRadius?: number
     ) => void;
+    selectedItemId: string | null;
+    setSelectedItemId: (id: string | null) => void;
 }
 
-export function Container({items, onItemUpdate}:ContainerProps){
-    const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-    const [rotatingItemId, setRotatingItemId] = useState<string | null>(null);
+export function Container({items, onItemUpdate, selectedItemId, setSelectedItemId}:ContainerProps){
 
     const handleItemClick = (e: React.MouseEvent, id: string) => {
         e.stopPropagation();
         setSelectedItemId(id);
-        setRotatingItemId(null);
     };
 
-    const handleRotationStart = (id: string) => {
-        setRotatingItemId(id);
-    };
+    
 
     return (
         <div
             className="w-full h-full relative"
             onClick={() => setSelectedItemId(null)}
-            onMouseUp={() => setRotatingItemId(null)}
             style={{
                 backgroundImage: `
                     linear-gradient(to right, #ddd 1px, transparent 1px),

@@ -20,7 +20,7 @@ export function Square({ color, width, height, radiusTopLeft, radiusTopRight, ra
                 height: `${height}px`,
                 borderRadius: `${radiusTopLeft}px ${radiusTopRight}px ${radiusBottomRight}px ${radiusBottomLeft}px`,
                 border: `${border}px solid ${borderColor}`,
-                opacity: `${opacity}/100`, 
+                opacity: opacity/100, 
                 transform: `rotate(${angle}deg)`,
             }}
         ></div>

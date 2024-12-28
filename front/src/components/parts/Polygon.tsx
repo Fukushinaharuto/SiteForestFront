@@ -33,7 +33,7 @@ export function Polygon({ width, height, color, border, borderColor, opacity, si
                 height: `${height}px`,
                 clipPath: `polygon(${polygonPoints})`,
                 border: `${border}px solid ${borderColor}`,
-                opacity: `${opacity}/100`,
+                opacity: opacity/100,
             }}
         ></div>
     );

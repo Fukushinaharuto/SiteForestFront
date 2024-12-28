@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect,　useState } from "react";
 import { LeftSide } from "@/components/create/LeftSide";
 import { RightSide } from "@/components/create/RightSide";
 import { Container } from "@/components/create/Container";
@@ -19,6 +19,18 @@ export default function Page() {
     const [activeDragItem, setActiveDragItem] = useState<UniqueIdentifier | null>(null);
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
+    const LOCAL_STORAGE_KEY = "droppedItems";
+    useEffect(() => {
+        const savedItems = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (savedItems) {
+            setDroppedItems(JSON.parse(savedItems));
+        }
+    }, []);
+    
+    useEffect(() => {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(droppedItems));
+    }, [droppedItems]);
+
     const handleDragStart = (event:DragStartEvent) => {
         setIsLeftSideOpen(false);
         setIsRightSideOpen(false);
@@ -33,6 +45,7 @@ export default function Page() {
         if (over?.id === "droppable") {
             const dropPosition = DroppedArea(active, "droppable-container");
             if (!dropPosition) return;
+            
             try {
                 const newItem = ItemsCase(
                     active.id,

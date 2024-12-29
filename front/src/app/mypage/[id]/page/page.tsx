@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect,　useState } from "react";
+import { useEffect, useState } from "react";
 import { LeftSide } from "@/components/create/LeftSide";
 import { RightSide } from "@/components/create/RightSide";
 import { Container } from "@/components/create/Container";

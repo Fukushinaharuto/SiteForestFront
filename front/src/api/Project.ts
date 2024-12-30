@@ -1,23 +1,25 @@
 import axios from "axios";
 
 export interface ProjectProps {
-    title: string;
-    Token: string;
+    name: string;
+    description?: string;
+    Token: string | undefined;
 }
 
-export async function Project({ title, Token }:ProjectProps ) {
+export async function Project({ name, description, Token }:ProjectProps ) {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project`;
     try{
         const response = await axios.post(api_url, {
-                title,
+                name,
+                description,
             },
             {
                 headers: {
                     Authorization: `Bearer ${Token}`,
-                }
+                },
             }
         );
-        return response
+        return response.data;
         
     }catch (error: unknown) {
         if (axios.isAxiosError(error)) {

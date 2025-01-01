@@ -13,7 +13,6 @@ export function RegisterForm() {
     const [password, setPassword] = useState<string>('');
     const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
     const [passwordVisibility, setPasswordVisibility] = useState(false);
-    const [error, setError] = useState<string>('');
     const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
     const route = useRouter();
 
@@ -23,7 +22,7 @@ export function RegisterForm() {
         setPasswordVisibility(false);
         const loginData = { email, password, password_confirmation: passwordConfirmation };
         try {
-            const response = await RegisterApi(loginData);
+            await RegisterApi(loginData);
             route.push('/login');
         } catch (error: any) {
             if (error?.status === 422 && error.data?.errors) {

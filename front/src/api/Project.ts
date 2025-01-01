@@ -21,7 +21,7 @@ export async function Project({ name, description, Token }:ProjectProps ) {
         );
         return response.data;
         
-    }catch (error: unknown) {
+    }catch (error: any) {
         if (axios.isAxiosError(error)) {
             throw error.response;
         }

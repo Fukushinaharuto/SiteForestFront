@@ -7,9 +7,6 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { LoginApi } from "@/api/Login";
 
-
-
-
 export function LoginForm() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');

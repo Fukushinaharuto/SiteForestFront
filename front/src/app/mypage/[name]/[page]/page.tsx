@@ -11,6 +11,8 @@ import { DroppedArea } from "@/components/create/DroppedArea"
 import { DragOver } from "@/components/create/DragOver";
 import { ItemsCase } from "@/components/create/ItemsCase"
 import { PolygonItems, SquareItems, CircleItems } from "@/components/create/ItemsCase"
+import { useParams, useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function Page() {
     const [droppedItems, setDroppedItems] = useState<(PolygonItems | SquareItems | CircleItems)[]>([]);
@@ -18,9 +20,16 @@ export default function Page() {
     const [isRightSideOpen, setIsRightSideOpen] = useState(true);
     const [activeDragItem, setActiveDragItem] = useState<UniqueIdentifier | null>(null);
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+    const { name, page } = useParams();
+    const Token = Cookies.get('AuthToken');
+    const router = useRouter();
 
-    const LOCAL_STORAGE_KEY = "droppedItems";
+    const LOCAL_STORAGE_KEY = `${name}_${page}_droppedItems`;
     useEffect(() => {
+        if(!Token){
+            router.push('/login');
+        }
+        
         const savedItems = localStorage.getItem(LOCAL_STORAGE_KEY);
         if (savedItems) {
             setDroppedItems(JSON.parse(savedItems));

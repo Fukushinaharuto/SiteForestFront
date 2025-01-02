@@ -22,7 +22,7 @@ export default function Page() {
     const handleApi = async() => {
         try {
             const response = await Project({ name, description, Token });
-            router.push('/mypage/a')
+            router.push(`/mypage/${response.project.name}/home`)
         } catch (error:any) {
             if (error?.status === 422 && error.data?.errors) {
                 setErrors(error.data.errors);

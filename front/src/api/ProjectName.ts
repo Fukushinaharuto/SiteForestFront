@@ -2,23 +2,27 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 export interface ProjectNameProps {
-    Token:string;
+    Token: string | undefined;
 }
 
-export async function Project({ Token }:ProjectNameProps ) {
-    const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project`;
+export function ProjectName(Token: string | undefined) {
     const router = useRouter();
-    try{
-        const response = await axios.get(api_url, 
-            {
-                headers: {
-                    Authorization: `Bearer ${Token}`,
-                },
-            }
-        );
-        return response.data;
-        
-    }catch (error: any) {
-        router.push('/mypage');
-    }
+
+    const checkProject = async () => {
+        const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project`;
+        try {
+        const response = await axios.get(api_url, {
+            headers: {
+                Authorization: `Bearer ${Token}`,
+            },
+        });
+            // レスポンスの処理
+            return response.data;
+        } catch (error) {
+            router.push('/mypage');
+            return null;
+        }
+    };
+
+    return checkProject;
 }

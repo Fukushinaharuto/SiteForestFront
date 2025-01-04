@@ -13,6 +13,7 @@ import { ItemsCase } from "@/components/create/ItemsCase"
 import { PolygonItems, SquareItems, CircleItems } from "@/components/create/ItemsCase"
 import { useParams, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { ProjectName } from "@/api/ProjectName";
 
 export default function Page() {
     const [droppedItems, setDroppedItems] = useState<(PolygonItems | SquareItems | CircleItems)[]>([]);
@@ -25,20 +26,32 @@ export default function Page() {
     const router = useRouter();
 
     const LOCAL_STORAGE_KEY = `${name}_${page}_droppedItems`;
-    useEffect(() => {
-        if(!Token){
-            router.push('/login');
-        }
-        
+    useEffect(() => {        
         const savedItems = localStorage.getItem(LOCAL_STORAGE_KEY);
         if (savedItems) {
             setDroppedItems(JSON.parse(savedItems));
         }
+        console.log('ldfjdsakf')
     }, []);
     
     useEffect(() => {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(droppedItems));
     }, [droppedItems]);
+
+    const checkProject = ProjectName(Token);
+
+    useEffect(() => {
+        if(!Token){
+          router.push('/login');
+          return;
+        }
+        const checkName = async() => {
+          const projectData = await checkProject();
+          // projectDataを使用して必要な処理を行う
+        }
+        
+        checkName();
+      }, [Token, name, checkProject]);
 
     const handleDragStart = (event:DragStartEvent) => {
         setIsLeftSideOpen(false);

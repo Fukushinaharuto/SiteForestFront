@@ -21,7 +21,8 @@ export default function Page() {
     const [isRightSideOpen, setIsRightSideOpen] = useState(true);
     const [activeDragItem, setActiveDragItem] = useState<UniqueIdentifier | null>(null);
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-    const { name, page } = useParams();
+    const { name: encodedName, page } = useParams();
+    const name = decodeURIComponent(encodedName as string);
     const Token = Cookies.get('AuthToken');
     const router = useRouter();
 
@@ -31,27 +32,33 @@ export default function Page() {
         if (savedItems) {
             setDroppedItems(JSON.parse(savedItems));
         }
-        console.log('ldfjdsakf')
     }, []);
     
     useEffect(() => {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(droppedItems));
     }, [droppedItems]);
 
-    const checkProject = ProjectName(Token);
+    const checkProject = ProjectName({Token});
 
     useEffect(() => {
         if(!Token){
-          router.push('/login');
-          return;
+            router.push('/login');
+            return;
         }
         const checkName = async() => {
-          const projectData = await checkProject();
-          // projectDataを使用して必要な処理を行う
-        }
-        
+            const response = await checkProject();
+            if (response && response.name) {
+                if (response.name.some(projectName => projectName === name)) {
+                    console.log(response.name);
+                } else {
+                    router.push("/mypage");
+                }
+            } else {
+                router.push('/mypage')
+            }
+        }    
         checkName();
-      }, [Token, name, checkProject]);
+    }, [Token, name, checkProject]);
 
     const handleDragStart = (event:DragStartEvent) => {
         setIsLeftSideOpen(false);
@@ -110,7 +117,7 @@ export default function Page() {
 
 
     return (
-        <div>
+        <div>     
             <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
                 {isLeftSideOpen && <LeftSide />}
                 <Droppable id="droppable">

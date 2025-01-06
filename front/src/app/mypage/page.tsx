@@ -32,7 +32,7 @@ export default function Page() {
         }
     }
     return(
-        <div>
+        <div className="max-w-3xl mx-auto">
             <input
                 type="text"
                 className="border border-text"

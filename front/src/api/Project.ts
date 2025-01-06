@@ -21,10 +21,25 @@ export async function Project({ name, description, Token }:ProjectProps ) {
         );
         return response.data;
         
-    }catch (error: any) {
+    } catch (error: any) {
         if (axios.isAxiosError(error)) {
             throw error.response;
         }
         throw error;
+    }
+}
+
+export async function ProjectIndex({Token}) {
+    const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project/index`;
+    try{
+        const response = await axios.get(api_url, {
+            headers: {
+                Authorization: `Bearer ${Token}`,
+            },
+        })
+        return response.data;
+    } catch (error) {
+        console.log(error)
+        return;
     }
 }

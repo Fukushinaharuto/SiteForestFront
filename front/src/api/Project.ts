@@ -6,6 +6,15 @@ export interface ProjectProps {
     Token: string | undefined;
 }
 
+export interface ProjectIndexProps {
+    Token: string | undefined;
+}
+
+export interface ProjectIndexResponse {
+    name: string;
+    description:string;
+}
+
 export async function Project({ name, description, Token }:ProjectProps ) {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project`;
     try{
@@ -29,10 +38,10 @@ export async function Project({ name, description, Token }:ProjectProps ) {
     }
 }
 
-export async function ProjectIndex({Token}) {
-    const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project/index`;
+export async function ProjectIndex({Token}:ProjectIndexProps): Promise<ProjectIndexResponse[] | undefined> {
+    const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project`;
     try{
-        const response = await axios.get(api_url, {
+        const response = await axios.get<ProjectIndexResponse[]>(api_url, {
             headers: {
                 Authorization: `Bearer ${Token}`,
             },
@@ -40,6 +49,6 @@ export async function ProjectIndex({Token}) {
         return response.data;
     } catch (error) {
         console.log(error)
-        return;
+        return undefined;
     }
 }

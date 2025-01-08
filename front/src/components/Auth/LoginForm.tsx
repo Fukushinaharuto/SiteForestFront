@@ -6,6 +6,7 @@ import { useState } from "react"
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { LoginApi } from "@/api/Login";
+import { ErrorProps } from "@/components/mypage/ProjectStore";
 
 export function LoginForm() {
     const [email, setEmail] = useState<string>('');
@@ -30,9 +31,10 @@ export function LoginForm() {
                 });
                 route.push('/home')
             }
-        } catch (error: any) {
-            if (error?.status === 422 && error.data?.errors) {
-                setErrors(error.data.errors);
+        } catch (error) {
+            const apiError = error as ErrorProps;
+            if (apiError?.status === 422 && apiError.data?.errors) {
+                setErrors(apiError.data.errors);
             } else {
                 setErrors({ password: ['メールアドレスまたはパスワードが正しくありません。'] })
             }

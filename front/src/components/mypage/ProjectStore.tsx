@@ -9,6 +9,15 @@ interface ProjectStoreProps {
     closeModal: () => void;
 }
 
+export interface ErrorProps {
+    status: number;
+    data: {
+        errors?: {
+            [key: string]: string[];
+        };
+    };
+}
+
 export function ProjectStore({ Token, closeModal }: ProjectStoreProps) {
     const router = useRouter();
     const [name, setName] = useState("");
@@ -19,9 +28,10 @@ export function ProjectStore({ Token, closeModal }: ProjectStoreProps) {
         try {
             const response = await Project({ name, description, Token });
             router.push(`/mypage/${response.project.name}/home`);
-        } catch (error: any) {
-            if (error?.status === 422 && error.data?.errors) {
-                setErrors(error.data.errors);
+        } catch (error) {
+            const apiError = error as ErrorProps;
+            if (apiError?.status === 422 && apiError.data?.errors) {
+                setErrors(apiError.data.errors);
             } else {
                 setErrors({ general: ["予期しないエラーが発生しました。"] });
             }
@@ -48,6 +58,7 @@ export function ProjectStore({ Token, closeModal }: ProjectStoreProps) {
                     className="w-full border border-baseC p-2 rounded mb-2"
                     placeholder="タイトル名"
                     onChange={(e) => setName(e.target.value)}
+                    maxLength={50}
                 />
                 {errors.name && (
                     <p className="text-error text-sm mb-2">
@@ -59,6 +70,7 @@ export function ProjectStore({ Token, closeModal }: ProjectStoreProps) {
                     className="w-full border border-baseC p-2 rounded mb-2"
                     placeholder="説明"
                     onChange={(e) => setDescription(e.target.value)}
+                    maxLength={1000}
                 />
                 {errors.description && (
                     <p className="text-error text-sm mb-2">

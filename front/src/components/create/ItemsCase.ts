@@ -12,21 +12,21 @@ export interface DroppedItems {
 
 export interface  PolygonItems extends PolygonProps {
     id: string;
-    type:UniqueIdentifier;
+    type:string;
     x: number;
     y: number;
 }
 
 export interface SquareItems extends SquareProps {
     id: string;
-    type:UniqueIdentifier;
+    type:string;
     x: number;
     y: number;
 }
 
 export interface CircleItems extends CircleProps {
     id: string;
-    type:UniqueIdentifier;
+    type:string;
     x: number;
     y: number;
 }

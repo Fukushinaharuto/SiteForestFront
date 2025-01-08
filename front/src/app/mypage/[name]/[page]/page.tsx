@@ -27,16 +27,18 @@ export default function Page() {
     const router = useRouter();
 
     const LOCAL_STORAGE_KEY = `${name}_${page}_droppedItems`;
-    useEffect(() => {        
+    useEffect(() => {
         const savedItems = localStorage.getItem(LOCAL_STORAGE_KEY);
         if (savedItems) {
             setDroppedItems(JSON.parse(savedItems));
         }
-    }, []);
+    }, [LOCAL_STORAGE_KEY]);
     
     useEffect(() => {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(droppedItems));
-    }, [droppedItems]);
+        if (droppedItems.length > 0) {
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(droppedItems));
+        }
+    }, [droppedItems, LOCAL_STORAGE_KEY]);
 
     const checkProject = ProjectName({Token});
 
@@ -49,7 +51,7 @@ export default function Page() {
             const response = await checkProject();
             if (response && response.name) {
                 if (response.name.some(projectName => projectName === name)) {
-                    console.log(response.name);
+                    return;
                 } else {
                     router.push("/mypage");
                 }
@@ -106,7 +108,7 @@ export default function Page() {
     
     const selectedItem = droppedItems.find((item) => item.id === selectedItemId);
 
-    const handlePropertyChange = (property: string, value: any) => {
+    const handlePropertyChange = (property: string, value:string | number) => {
         if (!selectedItemId) return;
         setDroppedItems((prevItems) =>
             prevItems.map((item) =>

@@ -1,11 +1,12 @@
 "use client"
 
 import { useState } from "react";
-import axios from "axios";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { RegisterApi } from "@/api/Register";
+import { ErrorProps } from "@/components/mypage/ProjectStore";
 
 
 export function RegisterForm() {
@@ -24,9 +25,10 @@ export function RegisterForm() {
         try {
             await RegisterApi(loginData);
             route.push('/login');
-        } catch (error: any) {
-            if (error?.status === 422 && error.data?.errors) {
-                setErrors(error.data.errors);
+        } catch (error) {
+            const apiError = error as ErrorProps;
+            if (apiError?.status === 422 && apiError.data?.errors) {
+                setErrors(apiError.data.errors);
             } else {
                 setErrors({ passwordConfirmation: ['もう一度、登録し直してください'] })
             }

@@ -18,6 +18,15 @@ interface RightSideProps {
 }
 
 export function RightSide({ selectedItem, onPropertyChange }: RightSideProps) {
+
+    const handleNumberChange = (property: string, value: string, min: number, max: number) => {
+        const numValue = Number(value);
+        if (value === '' || (numValue >= min && numValue <= max)) {
+            onPropertyChange(property as keyof typeof selectedItem, numValue);
+        }
+    };
+
+
     return (
         <div className="w-1/6 bg-gray-800 text-white p-4 fixed top-0 right-0 h-screen z-10">
             <h2 className="text-lg font-bold">右サイドバー</h2>
@@ -36,7 +45,7 @@ export function RightSide({ selectedItem, onPropertyChange }: RightSideProps) {
                         <input
                             type="number"
                             value={selectedItem.width}
-                            onChange={(e) => onPropertyChange("width", Number(e.target.value))}
+                            onChange={(e) => handleNumberChange("width", e.target.value, 0, 1980)}
                             className="text-text"
                         />
                     </div>
@@ -45,7 +54,7 @@ export function RightSide({ selectedItem, onPropertyChange }: RightSideProps) {
                         <input
                             type="number"
                             value={selectedItem.height}
-                            onChange={(e) => onPropertyChange("height", Number(e.target.value))}
+                            onChange={(e) => handleNumberChange("height", e.target.value, 0, 1980)}
                             className="text-text"
                         />
                     </div>
@@ -54,7 +63,7 @@ export function RightSide({ selectedItem, onPropertyChange }: RightSideProps) {
                         <input
                             type="number"
                             value={selectedItem.angle}
-                            onChange={(e) => onPropertyChange("angle", Number(e.target.value))}
+                            onChange={(e) => handleNumberChange("angle", e.target.value, 0, 360)}
                             className="text-text"
                         />
                     </div>
@@ -63,8 +72,10 @@ export function RightSide({ selectedItem, onPropertyChange }: RightSideProps) {
                         <input
                             type="number"
                             value={selectedItem.opacity}
-                            onChange={(e) => onPropertyChange("opacity", Number(e.target.value))}
+                            onChange={(e) => handleNumberChange("opacity", e.target.value, 0, 100)}
                             className="text-text"
+                            min={0}
+                            max={100}
                         />
                     </div>
                     <div>
@@ -72,7 +83,7 @@ export function RightSide({ selectedItem, onPropertyChange }: RightSideProps) {
                         <input
                             type="number"
                             value={selectedItem.border}
-                            onChange={(e) => onPropertyChange("border", Number(e.target.value))}
+                            onChange={(e) => handleNumberChange("border", e.target.value, 0, 20)}
                             className="text-text"
                         />
                         <input
@@ -88,25 +99,25 @@ export function RightSide({ selectedItem, onPropertyChange }: RightSideProps) {
                             <input
                                 type="number"
                                 value={selectedItem.radiusTopLeft}
-                                onChange={(e) => onPropertyChange("radiusTopLeft", Number(e.target.value))}
+                                onChange={(e) => handleNumberChange("radiusTopLeft", e.target.value, 0, 10000)}
                                 className="text-text"
                             />
                             <input
                                 type="number"
                                 value={selectedItem.radiusTopRight}
-                                onChange={(e) => onPropertyChange("radiusTopRight", Number(e.target.value))}
+                                onChange={(e) => handleNumberChange("radiusTopRight", e.target.value, 0, 1000)}
                                 className="text-text"
                             />
                             <input
                                 type="number"
                                 value={selectedItem.radiusBottomLeft}
-                                onChange={(e) => onPropertyChange("radiusBottomLeft", Number(e.target.value))}
+                                onChange={(e) => handleNumberChange("radiusBottomLeft", e.target.value, 0, 1000)}
                                 className="text-text"
                             />
                             <input
                                 type="number"
                                 value={selectedItem.radiusBottomRight}
-                                onChange={(e) => onPropertyChange("radiusBottomRight", Number(e.target.value))}
+                                onChange={(e) => handleNumberChange("radiusBottomRight", e.target.value, 0, 1000)}
                                 className="text-text"
                             />
                         </div>

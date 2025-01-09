@@ -6,7 +6,9 @@ import { usePathname } from "next/navigation";
 
 
 export function Header () {
-    const isShow = usePathname() == '/mypage' && '/home';
+    const pathname = usePathname();
+    const isShow = pathname === '/mypage' || pathname === '/home';
+
 
     return (
         <div>

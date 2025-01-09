@@ -40,7 +40,6 @@ export function RegisterForm() {
             <form 
                 onSubmit={handleRegister} 
             >
-                {/* メールアドレス入力 */}
                 <div className="mb-5">
                     <label className="block text-text text-base mb-1">メールアドレス</label>
                     <div className="relative">
@@ -66,8 +65,6 @@ export function RegisterForm() {
                         <p className="pt-2 text-error text-xs">{errors.email[0]}</p>
                     )}
                 </div>
-
-                {/* パスワード入力 */}
                 <div className="mb-5">
                     
                         <label className="block text-text text-base mb-1">パスワード</label>
@@ -100,15 +97,11 @@ export function RegisterForm() {
                                     className="absolute right-3 top-1/2 transform -translate-y-1/2"
                                 />
                             </button>
-                        </div>
-                    
-                    
+                        </div>       
                     {errors.password && (
                         <p className="pt-2 text-error text-xs">{errors.password[0]}</p>
                     )}
                 </div>
-
-                {/* パスワード確認 */}
                 <div className="mb-6">
                     <label className="block text-text text-base">パスワードの確認</label>
                     <div className="relative">
@@ -140,8 +133,6 @@ export function RegisterForm() {
                 >
                     すでにアカウントを持っている方
                 </Link>
-
-                {/* 登録ボタン */}
                 <div className="flex justify-center mt-10">
                     <button
                         type="submit"

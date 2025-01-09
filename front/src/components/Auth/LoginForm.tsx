@@ -46,7 +46,6 @@ export function LoginForm() {
             <form 
                 onSubmit={handleLogin} 
             >
-                {/* メールアドレス入力 */}
                 <div className="mb-5">
                     <label className="block text-text text-base mb-1">メールアドレス</label>
                     <div className="relative">
@@ -72,8 +71,6 @@ export function LoginForm() {
                         <p className="pt-2 text-error text-xs">{errors.email[0]}</p>
                     )}
                 </div>
-
-                {/* パスワード入力 */}
                 <div className="mb-6">
                     <label className="block text-text text-base mb-1">パスワード</label>
                     <div className="relative">
@@ -87,15 +84,13 @@ export function LoginForm() {
                                 errors.password ? "border-error" : "border-baseC"
                             }`}
                         />
-
                         <Image
                             src="/key.svg"
                             alt="鍵アイコン"
                             width={20}
                             height={20}
                             className="absolute left-3 top-1/2 transform -translate-y-1/2"
-                        />
-                        
+                        />         
                         <button onClick={() => setPasswordVisibility(!passwordVisibility)} type="button">
                             <Image
                                 src={`/visibility_${passwordVisibility ? "open" : "close"}.svg`}
@@ -125,8 +120,6 @@ export function LoginForm() {
                         パスワードをお忘れの方
                     </Link>
                 </div>
-
-                {/* 登録ボタン */}
                 <div className="flex justify-center mt-7">
                     <button
                         type="submit"
@@ -135,7 +128,6 @@ export function LoginForm() {
                         ログイン
                     </button>
                 </div>
-                
             </form>
         </div>
     );

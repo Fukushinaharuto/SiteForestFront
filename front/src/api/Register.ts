@@ -14,13 +14,13 @@ export const RegisterApi = async ({
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/register`;
 
     try {
-        const response = await axios.post(api_url, {
+        await axios.post(api_url, {
             email: email,
             password: password,
             password_confirmation: password_confirmation,
         });
-        return response.data;
-    } catch (error: unknown) {
+        return;
+    } catch (error) {
         if (axios.isAxiosError(error)) {
             throw error.response;
         }

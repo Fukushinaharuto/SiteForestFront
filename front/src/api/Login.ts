@@ -21,7 +21,7 @@ export const LoginApi = async ({
             password: password,
         });
         return response.data;
-    } catch (error: unknown) {
+    } catch (error) {
         if (axios.isAxiosError(error)) {
             throw error.response;
         }

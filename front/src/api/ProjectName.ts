@@ -13,7 +13,7 @@ export function ProjectName({Token}:ProjectNameProps) {
     const router = useRouter();
 
     const checkProject = async () => {
-        const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project/name`;
+        const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project/check`;
         try {
         const response = await axios.get<ProjectNameResponse>(api_url, {
             headers: {

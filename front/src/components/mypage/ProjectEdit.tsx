@@ -1,32 +1,23 @@
-"use client";
-
 import { useState } from "react";
-import { Project } from "@/api/Project";
-import { useRouter } from "next/navigation";
+import { ProjectIndexResponse } from "@/api/Project";
+import { ProjectUpdate } from "@/api/Project"; 
+import { ErrorProps } from "@/components/mypage/ProjectStore";
 
-interface ProjectStoreProps {
+interface ProjectEditProps {
+    project: ProjectIndexResponse;
     closeModal: () => void;
 }
 
-export interface ErrorProps {
-    status: number;
-    data: {
-        errors?: {
-            [key: string]: string[];
-        };
-    };
-}
-
-export function ProjectStore({ closeModal }: ProjectStoreProps) {
-    const router = useRouter();
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
+export function ProjectEdit({ project, closeModal }: ProjectEditProps) {
+    const [name, setName] = useState(project.name);
+    const [description, setDescription] = useState(project.description);
     const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
 
-    const handleApi = async () => {
+    const handleSave = async () => {
         try {
-            const response = await Project({ name, description });
-            router.push(`/mypage/${response.project.name}/home`);
+            const response = await ProjectUpdate({ id: project.id, name, description });
+            console.log(response.message)
+            closeModal();
         } catch (error) {
             const apiError = error as ErrorProps;
             if (apiError?.status === 422 && apiError.data?.errors) {
@@ -35,7 +26,7 @@ export function ProjectStore({ closeModal }: ProjectStoreProps) {
                 setErrors({ general: ["予期しないエラーが発生しました。"] });
             }
         }
-    };
+};
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50 px-4">
@@ -44,7 +35,7 @@ export function ProjectStore({ closeModal }: ProjectStoreProps) {
                 onClick={closeModal}
             />
             <div className="bg-white p-6 rounded-lg shadow-lg z-10 w-full max-w-md">
-                <h2 className="text-lg font-bold mb-4">プロジェクトの作成</h2>
+                <h2 className="text-lg font-bold mb-4">プロジェクトの編集</h2>
                 {errors.general &&
                     errors.general.map((err, idx) => (
                         <p key={idx} className="text-error text-sm mt-2">
@@ -54,22 +45,19 @@ export function ProjectStore({ closeModal }: ProjectStoreProps) {
                 }
                 <input
                     type="text"
-                    className="w-full border border-baseC p-2 rounded mb-2"
-                    placeholder="タイトル名"
+                    className="w-full border p-2 rounded mb-2"
+                    value={name}
                     onChange={(e) => setName(e.target.value)}
-                    maxLength={50}
                 />
                 {errors.name && (
                     <p className="text-error text-sm mb-2">
                         {errors.name[0]}
                     </p>
                 )}
-                <input
-                    type="text"
-                    className="w-full border border-baseC p-2 rounded mb-2"
-                    placeholder="説明"
+                <textarea
+                    className="w-full border p-2 rounded mb-2"
+                    value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    maxLength={1000}
                 />
                 {errors.description && (
                     <p className="text-error text-sm mb-2">
@@ -85,9 +73,9 @@ export function ProjectStore({ closeModal }: ProjectStoreProps) {
                     </button>
                     <button
                         className="bg-accent text-white px-4 py-2 rounded"
-                        onClick={handleApi}
+                        onClick={handleSave}
                     >
-                        作成
+                        保存
                     </button>
                 </div>
             </div>

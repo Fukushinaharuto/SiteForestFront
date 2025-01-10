@@ -8,6 +8,8 @@ import { ProjectEdit } from "@/components/mypage/ProjectEdit";
 import { ProjectIndexResponse } from "@/api/Project";
 import Image from "next/image";
 import { ProjectDelete } from "@/components/mypage/ProjectDelete";
+import { IdsProps } from "@/api/Project";
+
 
 export default function Page() {
     const Token = Cookies.get("AuthToken");
@@ -18,17 +20,13 @@ export default function Page() {
             router.push("/login");
         }
     }, []);
+    
+    
 
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [selectedProject, setSelectedProject] = useState<ProjectIndexResponse | null>(null);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-    const [selectedIds, setSelectedIds] = useState<number[]>([]);
-
-    const toggleSelectProject = (id: number) => {
-        setSelectedIds((prevIds) =>
-            prevIds.includes(id) ? prevIds.filter((itemId) => itemId !== id) : [...prevIds, id]
-        );
-    };
+    const [ids, setIds] = useState<IdsProps[]>([]);
 
     return (
         <div className="relative max-w-6xl mx-auto px-4">
@@ -86,6 +84,8 @@ export default function Page() {
             </div>
             <ProjectList
                 isEditOpen={isEditOpen}
+                isDeleteOpen={isDeleteOpen}
+                setIds={setIds}
                 setSelectedProject={setSelectedProject}
             />
             {selectedProject && (
@@ -96,8 +96,8 @@ export default function Page() {
             )}
             {isDeleteOpen && (
                 <ProjectDelete 
-                    ids={selectedIds}
-                    closeModal={() => }
+                    ids={ids}
+                    closeModal={() => setSelectedProject(null)}
                 />
             )}
         </div>

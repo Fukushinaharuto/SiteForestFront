@@ -1,16 +1,18 @@
 "use client"
-import { ProjectIndex, ProjectIndexResponse } from "@/api/Project";
+import { ProjectIndex, ProjectIndexResponse, IdsProps } from "@/api/Project";
 import { useEffect, useState } from "react";
 import { ProjectValue } from "@/components/mypage/ProjectValue";
 import Image from "next/image";
 import { ProjectStore } from "@/components/mypage/ProjectStore";
 
-interface ProjectListProps{
+interface ProjectListProps {
     isEditOpen: boolean;
     setSelectedProject: (project: ProjectIndexResponse | null) => void;
+    isDeleteOpen:boolean;
+    setIds: React.Dispatch<React.SetStateAction<IdsProps[]>>;
 }
 
-export function ProjectList({ isEditOpen, setSelectedProject }:ProjectListProps) {
+export function ProjectList({ isEditOpen, isDeleteOpen, setIds,  setSelectedProject }:ProjectListProps) {
     const [isStoreOpen, setIsStoreOpen] = useState(false);
     const [projectList, setProjectList] = useState<ProjectIndexResponse[]>([]);
 
@@ -26,6 +28,18 @@ export function ProjectList({ isEditOpen, setSelectedProject }:ProjectListProps)
         List();
     }, [{ProjectList}])
     
+    const handleProjectClick = (project: ProjectIndexResponse) => {
+        if (isEditOpen) {
+            setSelectedProject(project);
+        } else if (isDeleteOpen) {
+            setIds(prevIds => {
+                if (!prevIds.some(item => item.id === project.id)) {
+                    return [...prevIds, { id: project.id, name: project.name }];
+                }
+                return prevIds;
+            });
+        }
+    }
 
     return(
         <div>
@@ -47,9 +61,9 @@ export function ProjectList({ isEditOpen, setSelectedProject }:ProjectListProps)
                             key={index}
                             value={project}
                             isEditOpen={isEditOpen}
-                            onClick={() =>
-                                isEditOpen && setSelectedProject(project)
-                            }
+                            isDeleteOpen={isDeleteOpen}
+                            onClick={() => handleProjectClick(project)}
+                            
                         />
                     ))
                 )}

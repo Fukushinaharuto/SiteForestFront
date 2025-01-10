@@ -22,6 +22,12 @@ export interface ProjectUpdateProps {
 export interface ProjectDestroyResponse { 
     message: string;
 }
+
+export interface IdsProps { 
+    id: number;
+    name: string;
+}
+
 export async function Project({ name, description }:ProjectProps ) {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project`;
     const Token = Cookies.get('AuthToken');
@@ -84,7 +90,7 @@ export async function ProjectUpdate({ id, name, description }: ProjectUpdateProp
     }
 }
 
-export async function ProjectDestroy({ ids }: { ids: number[] }): Promise<ProjectDestroyResponse> {
+export async function ProjectDestroy({ ids }: { ids: IdsProps[] }): Promise<ProjectDestroyResponse> {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project/destroy`;
     const Token = Cookies.get('AuthToken');
 

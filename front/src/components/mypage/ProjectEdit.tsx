@@ -55,7 +55,7 @@ export function ProjectEdit({ project, closeModal }: ProjectEditProps) {
                     </p>
                 )}
                 <textarea
-                    className="w-full border p-2 rounded mb-2"
+                    className="w-full border p-2 rounded mb-2 h-32"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />

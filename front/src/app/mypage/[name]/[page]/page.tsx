@@ -138,7 +138,7 @@ export default function Page() {
     if (!checkToken) {
         return (
             <div className="flex justify-center items-center h-screen">
-                <div className="loader">ローディング中...</div>
+                <div className="square-spin-3"></div>
             </div>
         );
     }

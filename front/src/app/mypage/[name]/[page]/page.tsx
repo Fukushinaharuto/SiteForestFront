@@ -14,6 +14,7 @@ import { PolygonItems, SquareItems, CircleItems } from "@/components/create/Item
 import { useParams, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { ProjectName } from "@/api/ProjectName";
+import { VerifyToken } from "@/api/VerifyToken";
 
 export default function Page() {
     const [droppedItems, setDroppedItems] = useState<(PolygonItems | SquareItems | CircleItems)[]>([]);
@@ -25,6 +26,23 @@ export default function Page() {
     const name = decodeURIComponent(encodedName as string);
     const Token = Cookies.get('AuthToken');
     const router = useRouter();
+
+    const [checkToken, setCheckToken] = useState(false);
+    const { useVerifyToken } = VerifyToken();
+
+    useEffect(() => {
+        const Verify = async() => {
+            const response = await useVerifyToken();
+            if (response) {
+                console.log(response.tokenExists);
+                setCheckToken(true)
+            } else {
+                router.push("/login");
+            }
+        }
+        Verify()
+    }, [VerifyToken, Token, router]);
+
 
     const LOCAL_STORAGE_KEY = `${name}_${page}_droppedItems`;
     useEffect(() => {
@@ -117,6 +135,13 @@ export default function Page() {
         );
     };
 
+    if (!checkToken) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="loader">ローディング中...</div>
+            </div>
+        );
+    }
 
     return (
         <div>     

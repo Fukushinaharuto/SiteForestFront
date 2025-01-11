@@ -10,16 +10,17 @@ interface ProjectListProps {
     setSelectedProject: (project: ProjectIndexResponse | null) => void;
     isDeleteOpen:boolean;
     setIds: React.Dispatch<React.SetStateAction<IdsProps[]>>;
+    setCheckToken: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function ProjectList({ isEditOpen, isDeleteOpen, setIds,  setSelectedProject }:ProjectListProps) {
+export function ProjectList({ isEditOpen, isDeleteOpen, setIds,  setSelectedProject, setCheckToken }:ProjectListProps) {
     const [isStoreOpen, setIsStoreOpen] = useState(false);
     const [projectList, setProjectList] = useState<ProjectIndexResponse[]>([]);
     const [selectedProjects, setSelectedProjects] = useState<Set<number>>(new Set());
 
     useEffect(() => { 
         const List = async() => {
-            const response = await ProjectIndex();
+            const response = await ProjectIndex({ setCheckToken });
             if (response) {
                 setProjectList(response.reverse());
             } else {

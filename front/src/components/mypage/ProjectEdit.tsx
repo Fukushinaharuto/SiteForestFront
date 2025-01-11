@@ -13,10 +13,25 @@ export function ProjectEdit({ project, closeModal }: ProjectEditProps) {
     const [description, setDescription] = useState(project.description);
     const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
 
+    const updateLocalStorage = (oldName: string, newName: string) => {
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith(`${oldName}_`)) {
+                const newKey = key.replace(`${oldName}_`, `${newName}_`);
+                const value = localStorage.getItem(key);
+                if (value) {
+                    localStorage.setItem(newKey, value);
+                    localStorage.removeItem(key);
+                }
+            }
+        });
+    };
+
     const handleSave = async () => {
         try {
             const response = await ProjectUpdate({ id: project.id, name, description });
-            console.log(response.message)
+            if (name !== project.name) {
+                updateLocalStorage(project.name, name);
+            }
             closeModal();
         } catch (error) {
             const apiError = error as ErrorProps;

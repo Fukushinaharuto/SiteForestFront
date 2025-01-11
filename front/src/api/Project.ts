@@ -6,6 +6,9 @@ export interface ProjectProps {
     description?: string;
 }
 
+export interface ProjectIndexProps {
+    setCheckToken: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 export interface ProjectIndexResponse {
     id: number;
@@ -57,7 +60,7 @@ export async function Project({ name, description }:ProjectProps ) {
     }
 }
 
-export async function ProjectIndex(): Promise<ProjectIndexResponse[] | null> {
+export async function ProjectIndex({ setCheckToken }: ProjectIndexProps): Promise<ProjectIndexResponse[] | null> {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project`;
     const Token = Cookies.get('AuthToken');
     try{
@@ -68,7 +71,7 @@ export async function ProjectIndex(): Promise<ProjectIndexResponse[] | null> {
         })
         return response.data;
     } catch (error) {
-        console.log(error)
+        setCheckToken(false)
         return null;
     }
 }

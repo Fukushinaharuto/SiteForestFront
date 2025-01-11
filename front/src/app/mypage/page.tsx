@@ -9,17 +9,26 @@ import { ProjectIndexResponse } from "@/api/Project";
 import Image from "next/image";
 import { ProjectDelete } from "@/components/mypage/ProjectDelete";
 import { IdsProps } from "@/api/Project";
-
+import { VerifyToken } from "@/api/VerifyToken";
 
 export default function Page() {
     const Token = Cookies.get("AuthToken");
     const router = useRouter();
+    const [checkToken, setCheckToken] = useState(false);
+    const { useVerifyToken } = VerifyToken();
 
     useEffect(() => {
-        if (!Token) {
-            router.push("/login");
+        const Verify = async() => {
+            const response = await useVerifyToken();
+            if (response) {
+                console.log(response.tokenExists);
+                setCheckToken(true)
+            } else {
+                router.push("/login");
+            }
         }
-    }, []);
+        Verify()
+    }, [VerifyToken, Token, router]);
     
     
 
@@ -31,12 +40,20 @@ export default function Page() {
 
     const handleDelete = () => {
         setIsDeleteModal(!isDeleteModal);
-        // setIsDeleteOpen(!isDeleteOpen);
+    }
+
+
+    if (!checkToken) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="loader">ローディング中...</div>
+            </div>
+        );
     }
 
     return (
         <div className="relative max-w-6xl mx-auto px-4">
-            <h1 className="text-text text-4xl mt-3">プロジェクト一覧</h1>
+            <h1 className="text-text text-4xl mt-3">個人プロジェクト</h1>
             {isEditOpen && (
                 <div 
                     className="fixed inset-0 bg-black bg-opacity-50 z-40"
@@ -106,6 +123,7 @@ export default function Page() {
                 isDeleteOpen={isDeleteOpen}
                 setIds={setIds}
                 setSelectedProject={setSelectedProject}
+                setCheckToken={setCheckToken}
             />
             {selectedProject && (
                 <ProjectEdit

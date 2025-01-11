@@ -14,7 +14,13 @@ export function ProjectDelete({ ids, setIds, setIsDeleteModal, setIsDeleteOpen }
     const handleDelete = async () => {
         const idArray = ids.map(item => item.id);
         const response = await ProjectDestroy({ setIds, idArray});
-        console.log(response.message)
+        ids.forEach(project => {
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith(`${project.name}_`)) {
+                    localStorage.removeItem(key);
+                }
+            });
+        });
         setIsDeleteModal(false);
         setIsDeleteOpen(false);  
     };

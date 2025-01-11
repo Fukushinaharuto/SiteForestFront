@@ -19,6 +19,11 @@ export interface ProjectUpdateProps {
     description: string;
 }
 
+export interface ProjectDestroyProps {
+    setIds: React.Dispatch<React.SetStateAction<IdsProps[]>>;
+    idArray: number[];
+}
+
 export interface ProjectDestroyResponse { 
     message: string;
 }
@@ -90,21 +95,22 @@ export async function ProjectUpdate({ id, name, description }: ProjectUpdateProp
     }
 }
 
-export async function ProjectDestroy({ ids }: { ids: IdsProps[] }): Promise<ProjectDestroyResponse> {
+export async function ProjectDestroy({ setIds, idArray }: ProjectDestroyProps): Promise<ProjectDestroyResponse> {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project/destroy`;
     const Token = Cookies.get('AuthToken');
 
     try {
-        await axios.post(
+        const response = await axios.delete(
             api_url,
-            { ids },
             {
+                data: {idArray},
                 headers: {
                     Authorization: `Bearer ${Token}`,
                 },
             }
         );
-        return {message: "削除に成功しました。"};
+        setIds([])
+        return response.data;
     } catch (error) {
         return {message:"削除に失敗しました。"};
     }

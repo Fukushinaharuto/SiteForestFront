@@ -1,21 +1,24 @@
 import { ProjectIndexResponse } from "@/api/Project"
 import { CharacterLimit } from "@/components/mypage/CharacterLimit";
 import Link from "next/link";
+import { useState } from "react";
 
 export interface ProjectValueProps {
     value: ProjectIndexResponse;
     isEditOpen: boolean;
     isDeleteOpen: boolean;
+    isSelected: boolean;
     onClick: () => void;
 }
 
-export function ProjectValue({ value, isEditOpen, isDeleteOpen, onClick}:ProjectValueProps) {
+export function ProjectValue({ value, isEditOpen, isDeleteOpen, isSelected, onClick}:ProjectValueProps) {
+
     return(
         
         <div
-            className={`relative ${isEditOpen ? "z-50" : ""}`}
+            className={`relative ${(isEditOpen || isDeleteOpen) ? "z-50" : ""}`}
         >
-            {!isEditOpen && !isDeleteOpen ?
+            {!(isEditOpen || isDeleteOpen) ?
                 <Link href={`/mypage/${value.name}/home`} prefetch>
                     <div
                         className="p-4 rounded-lg shadow-form sm:h-96 h-52 cursor-pointer"
@@ -31,7 +34,7 @@ export function ProjectValue({ value, isEditOpen, isDeleteOpen, onClick}:Project
             :
                 <div onClick={onClick}>
                     <div
-                        className="p-4 border-1 rounded-lg shadow-form sm:h-96 h-52 bg-white border-text cursor-pointer"
+                        className={`${isSelected ? "border-4 border-sub" : "border-1 border-text" } p-4 rounded-lg shadow-form sm:h-96 h-52 bg-white cursor-pointer`}
                     >
                         <h2 className="sm:text-2xl text-lg font-bold">
                             {CharacterLimit(value.name, 20)}
@@ -42,6 +45,8 @@ export function ProjectValue({ value, isEditOpen, isDeleteOpen, onClick}:Project
                     </div>
                 </div>
             }
+
+            
             
         </div>
     )

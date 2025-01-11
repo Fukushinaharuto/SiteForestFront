@@ -15,6 +15,7 @@ interface ProjectListProps {
 export function ProjectList({ isEditOpen, isDeleteOpen, setIds,  setSelectedProject }:ProjectListProps) {
     const [isStoreOpen, setIsStoreOpen] = useState(false);
     const [projectList, setProjectList] = useState<ProjectIndexResponse[]>([]);
+    const [selectedProjects, setSelectedProjects] = useState<Set<number>>(new Set());
 
     useEffect(() => { 
         const List = async() => {
@@ -32,11 +33,21 @@ export function ProjectList({ isEditOpen, isDeleteOpen, setIds,  setSelectedProj
         if (isEditOpen) {
             setSelectedProject(project);
         } else if (isDeleteOpen) {
+            setSelectedProjects(prev => {
+                const newSet = new Set(prev);
+                if (newSet.has(project.id)) {
+                    newSet.delete(project.id);
+                } else {
+                    newSet.add(project.id);
+                }
+                return newSet;
+            });
+
             setIds(prevIds => {
                 if (!prevIds.some(item => item.id === project.id)) {
                     return [...prevIds, { id: project.id, name: project.name }];
                 }
-                return prevIds;
+                return prevIds.filter(item => item.id !== project.id);
             });
         }
     }
@@ -62,8 +73,8 @@ export function ProjectList({ isEditOpen, isDeleteOpen, setIds,  setSelectedProj
                             value={project}
                             isEditOpen={isEditOpen}
                             isDeleteOpen={isDeleteOpen}
+                            isSelected={selectedProjects.has(project.id)}
                             onClick={() => handleProjectClick(project)}
-                            
                         />
                     ))
                 )}

@@ -26,7 +26,13 @@ export default function Page() {
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [selectedProject, setSelectedProject] = useState<ProjectIndexResponse | null>(null);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [isDeleteModal, setIsDeleteModal] = useState(false);
     const [ids, setIds] = useState<IdsProps[]>([]);
+
+    const handleDelete = () => {
+        setIsDeleteModal(!isDeleteModal);
+        // setIsDeleteOpen(!isDeleteOpen);
+    }
 
     return (
         <div className="relative max-w-6xl mx-auto px-4">
@@ -35,6 +41,12 @@ export default function Page() {
                 <div 
                     className="fixed inset-0 bg-black bg-opacity-50 z-40"
                     onClick={() => setIsEditOpen(false)}
+                />
+            )}
+            {isDeleteOpen && (
+                <div 
+                    className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                    onClick={() => setIsDeleteOpen(false)}
                 />
             )}
             <div className="flex space-x-4 justify-end mb-2">
@@ -59,28 +71,35 @@ export default function Page() {
                     
                     
                 </button>
-
-                <button
-                    className={`py-2 rounded ${
-                        isDeleteOpen ? "bg-error text-white z-50 px-11" : "px-2 bg-sub text-white"
-                    }`}
-                    onClick={() => setIsDeleteOpen(!isDeleteOpen)}
-                >
-                    <div className="flex">
-                        {isDeleteOpen ? "削除" : "削除モード"}
-                        {!isDeleteOpen && 
-                            <Image
-                                src="/delete.svg"
-                                alt="削除するアイコン"
-                                width={22}
-                                height={22}
-                                className="ml-1"
-                            />
-                        }
-                    </div>
-                    
-                    
-                </button>
+                {!isDeleteOpen ? 
+                    <button
+                        className={`py-2 rounded ${
+                            isDeleteOpen ? "bg-error text-white z-50 px-11" : "px-2 bg-sub text-white"
+                        }`}
+                        onClick={() => setIsDeleteOpen(!isDeleteOpen)}
+                    >
+                        <div className="flex">
+                            <div>削除モード</div>
+                                <Image
+                                    src="/delete.svg"
+                                    alt="削除するアイコン"
+                                    width={22}
+                                    height={22}
+                                    className="ml-1"
+                                />   
+                        </div>
+                    </button>
+                :
+                    <button
+                        className={`py-2 rounded ${
+                            isDeleteOpen ? "bg-error text-white z-50 px-11" : "px-2 bg-sub text-white"
+                        }`}
+                        onClick={() => handleDelete()}
+                    >
+                        削除   
+                    </button>
+                }
+                
             </div>
             <ProjectList
                 isEditOpen={isEditOpen}
@@ -94,10 +113,12 @@ export default function Page() {
                     closeModal={() => setSelectedProject(null)}
                 />
             )}
-            {isDeleteOpen && (
+            {isDeleteModal && (
                 <ProjectDelete 
                     ids={ids}
-                    closeModal={() => setSelectedProject(null)}
+                    setIds={setIds}
+                    setIsDeleteModal={setIsDeleteModal}
+                    setIsDeleteOpen={setIsDeleteOpen}
                 />
             )}
         </div>

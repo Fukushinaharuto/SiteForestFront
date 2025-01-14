@@ -21,9 +21,9 @@ export default function Page() {
         const Verify = async() => {
             const response = await useVerifyToken();
             if (response) {
-                console.log(response.tokenExists);
                 setCheckToken(true)
             } else {
+                Cookies.remove('AuthToken', { path: '/' });
                 router.push("/login");
             }
         }

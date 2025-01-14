@@ -1,16 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LeftSide } from "@/components/create/LeftSide";
-import { RightSide } from "@/components/create/RightSide";
-import { Container } from "@/components/create/Container";
+import { LeftSide } from "@/components/mypage/create/LeftSide";
+import { RightSide } from "@/components/mypage/create/RightSide";
+import { Container } from "@/components/mypage/create/Container";
 import { DndContext } from "@dnd-kit/core";
-import { Droppable } from "@/components/create/dnd/Droppable";
+import { Droppable } from "@/components/mypage/create/dnd/Droppable";
 import { DragStartEvent, DragEndEvent, UniqueIdentifier } from "@dnd-kit/core";
-import { DroppedArea } from "@/components/create/DroppedArea"
-import { DragOver } from "@/components/create/DragOver";
-import { ItemsCase } from "@/components/create/ItemsCase"
-import { PolygonItems, SquareItems, CircleItems } from "@/components/create/ItemsCase"
+import { DroppedArea } from "@/components/mypage/create/DroppedArea"
+import { DragOver } from "@/components/mypage/create/DragOver";
+import { ItemsCase } from "@/components/mypage/create/ItemsCase"
+import { PolygonItems, SquareItems, CircleItems } from "@/components/mypage/create/ItemsCase"
 import { useParams, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { ProjectName } from "@/api/ProjectName";
@@ -26,10 +26,9 @@ export default function Page() {
     const name = decodeURIComponent(encodedName as string);
     const Token = Cookies.get('AuthToken');
     const router = useRouter();
-
     const [checkToken, setCheckToken] = useState(false);
-    const { useVerifyToken } = VerifyToken();
 
+    const { useVerifyToken } = VerifyToken();
     useEffect(() => {
         const Verify = async() => {
             const response = await useVerifyToken();
@@ -37,6 +36,7 @@ export default function Page() {
                 console.log(response.tokenExists);
                 setCheckToken(true)
             } else {
+                Cookies.remove('AuthToken', { path: '/' });
                 router.push("/login");
             }
         }
@@ -58,13 +58,8 @@ export default function Page() {
         }
     }, [droppedItems, LOCAL_STORAGE_KEY]);
 
-    const checkProject = ProjectName({Token});
-
+    const checkProject = ProjectName();
     useEffect(() => {
-        if(!Token){
-            router.push('/login');
-            return;
-        }
         const checkName = async() => {
             const response = await checkProject();
             if (response && response.name) {
@@ -108,13 +103,7 @@ export default function Page() {
         }
     };
 
-    const handleItemUpdate = (
-        id: string,
-        x: number,
-        y: number,
-        width?: number,
-        height?: number
-    ) => {
+    const onItemUpdate = (id: string, x: number, y: number, width?: number, height?: number) => {
         setDroppedItems((prevItems) =>
             prevItems.map((item) =>
                 item.id === id
@@ -122,7 +111,7 @@ export default function Page() {
                     : item
             )
         );
-    }
+    };    
     
     const selectedItem = droppedItems.find((item) => item.id === selectedItemId);
 
@@ -146,12 +135,16 @@ export default function Page() {
     return (
         <div>     
             <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
-                {isLeftSideOpen && <LeftSide />}
+                {isLeftSideOpen && 
+                    <LeftSide 
+                        setIsLeftSideOpen={setIsLeftSideOpen}
+                    />
+                }
                 <Droppable id="droppable">
                     <div id="droppable-container" className="w-full h-full relative">
                         <Container
                             items={droppedItems}
-                            onItemUpdate={handleItemUpdate}
+                            onItemUpdate={onItemUpdate}
                             selectedItemId={selectedItemId}
                             setSelectedItemId={setSelectedItemId}
                         />    
@@ -165,6 +158,7 @@ export default function Page() {
                 <RightSide
                     selectedItem={selectedItem}
                     onPropertyChange={handlePropertyChange}
+                    setIsRightSideOpen={setIsRightSideOpen}
                 />
             )}
         </div>

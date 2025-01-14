@@ -26,7 +26,7 @@ export function VerifyToken() {
             });
             return response.data;
         } catch (error) {
-            console.error("Token verification failed:", error);
+            Cookies.remove('AuthToken', { path: '/' });
             router.push("/login");
             return;
         }

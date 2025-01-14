@@ -15,9 +15,10 @@ interface RightSideProps {
         radiusBottomRight?: number;
     };
     onPropertyChange: (property: 'color' | 'height' | 'width' | 'angle' | 'opacity' | 'border' | 'borderColor' | 'radiusTopLeft' | 'radiusTopRight' | 'radiusBottomLeft' | 'radiusBottomRight', value: string | number) => void;
+    setIsRightSideOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function RightSide({ selectedItem, onPropertyChange }: RightSideProps) {
+export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }: RightSideProps) {
 
     const handleNumberChange = (property: string, value: string, min: number, max: number) => {
         const numValue = Number(value);
@@ -29,6 +30,7 @@ export function RightSide({ selectedItem, onPropertyChange }: RightSideProps) {
 
     return (
         <div className="w-1/6 bg-gray-800 text-white p-4 fixed top-0 right-0 h-screen z-10">
+            <button onClick={() => setIsRightSideOpen(false)}>閉じる</button>
             <h2 className="text-lg font-bold">右サイドバー</h2>
             {selectedItem ? (
                 <div className="mt-4 space-y-4">

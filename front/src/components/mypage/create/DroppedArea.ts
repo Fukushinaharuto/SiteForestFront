@@ -1,4 +1,4 @@
-import { RoundToGrid } from "@/components/create/RoundToGrid";
+
 import { DragEndEvent } from "@dnd-kit/core";
 
 export function DroppedArea(active:DragEndEvent["active"], containerId:string) {
@@ -13,7 +13,6 @@ export function DroppedArea(active:DragEndEvent["active"], containerId:string) {
     if (finalX + 50 > containerRect.width) finalX = containerRect.width - 50;
     if (finalY < 0) finalY = 0;
     if (finalY + 50 > containerRect.height) finalY = containerRect.height - 50;
-    finalX = RoundToGrid(finalX, 5);
-    finalY = RoundToGrid(finalY, 5);
+    
     return { finalX, finalY };
 };

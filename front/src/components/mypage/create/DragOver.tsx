@@ -12,6 +12,7 @@ export function DragOver({ activeDragItem }: { activeDragItem: UniqueIdentifier 
                 <Polygon
                     width={50}
                     height={50}
+                    unit="px"
                     color="#3498db"
                     border={0}
                     borderColor=""
@@ -24,6 +25,7 @@ export function DragOver({ activeDragItem }: { activeDragItem: UniqueIdentifier 
                 <Square
                     width={50}
                     height={50}
+                    unit="px"
                     radiusTopLeft={0}
                     radiusTopRight={0}
                     radiusBottomLeft={0}
@@ -39,6 +41,7 @@ export function DragOver({ activeDragItem }: { activeDragItem: UniqueIdentifier 
                 <Circle
                     width={50}
                     height={50}
+                    unit="px"
                     color="#3498db"
                     border={0}
                     borderColor=""

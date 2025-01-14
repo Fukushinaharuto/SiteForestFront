@@ -2,6 +2,7 @@ export interface SquareProps{
     color: string;
     width: number;
     height: number;
+    unit: string;
     radiusTopLeft: number
     radiusTopRight: number;
     radiusBottomLeft: number;
@@ -11,12 +12,12 @@ export interface SquareProps{
     opacity: number;
     angle: number;
 }
-export function Square({ color, width, height, radiusTopLeft, radiusTopRight, radiusBottomLeft, radiusBottomRight, border, borderColor, opacity, angle }:SquareProps) {
+export function Square({ color, width, height, unit, radiusTopLeft, radiusTopRight, radiusBottomLeft, radiusBottomRight, border, borderColor, opacity, angle }:SquareProps) {
     return(
         <div
             style={{
                 backgroundColor: color,
-                width: `${width}px`,
+                width: `${width}${unit}`,
                 height: `${height}px`,
                 borderRadius: `${radiusTopLeft}px ${radiusTopRight}px ${radiusBottomRight}px ${radiusBottomLeft}px`,
                 border: `${border}px solid ${borderColor}`,

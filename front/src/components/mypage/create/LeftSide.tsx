@@ -1,10 +1,13 @@
 import { Polygon }  from "@/components/parts/Polygon";
-import { Draggable } from '@/components/create/dnd/Draggable';
+import { Draggable } from '@/components/mypage/create/dnd/Draggable';
 import { Square } from "@/components/parts/Square";
 import { Circle } from "@/components/parts/Circle";
 import { useState } from "react";
 
-export function LeftSide(){
+export interface LeftSideProps {
+    setIsLeftSideOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+export function LeftSide({ setIsLeftSideOpen }: LeftSideProps){
     const [openSections, setOpenSections] = useState({
         shapes: false,
         text: false,
@@ -19,6 +22,7 @@ export function LeftSide(){
     return(
         <div>
             <div className="w-[150px] bg-gray-800 text-white p-4 fixed top-0 left-0 h-screen z-10">
+                <button onClick={() => setIsLeftSideOpen(false)}>閉じる</button>
                 <h2 className="text-lg font-bold">パーツ</h2>
                 <ul className="mt-4 space-y-2">
                     <li className="py-1 relative">
@@ -36,6 +40,7 @@ export function LeftSide(){
                                             <Polygon
                                                 width={50}
                                                 height={50}
+                                                unit="px"
                                                 color="#3498db"
                                                 border={0}
                                                 borderColor=""
@@ -50,6 +55,7 @@ export function LeftSide(){
                                             <Square
                                                 width={50}
                                                 height={50}
+                                                unit="px"
                                                 radiusTopLeft={0}
                                                 radiusTopRight={0}
                                                 radiusBottomLeft={0}
@@ -67,6 +73,7 @@ export function LeftSide(){
                                             <Circle
                                                 width={50}
                                                 height={50}
+                                                unit="px"
                                                 color="#3498db"
                                                 border={0}
                                                 borderColor=""

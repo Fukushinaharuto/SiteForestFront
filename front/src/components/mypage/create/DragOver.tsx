@@ -18,7 +18,7 @@ export function DragOver({ activeDragItem }: { activeDragItem: UniqueIdentifier 
                     borderColor=""
                     opacity={100}
                     sides={5}
-                    angleOffset={0}
+                    angle={0}
                 />
             )}
             {activeDragItem === "square" && (
@@ -26,10 +26,7 @@ export function DragOver({ activeDragItem }: { activeDragItem: UniqueIdentifier 
                     width={50}
                     height={50}
                     unit="px"
-                    radiusTopLeft={0}
-                    radiusTopRight={0}
-                    radiusBottomLeft={0}
-                    radiusBottomRight={0}
+                    borderRadius="0px"
                     color="#3498db"
                     border={0}
                     borderColor=""

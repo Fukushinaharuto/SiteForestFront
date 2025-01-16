@@ -1,21 +1,25 @@
-import React, { useCallback, useRef, useState, useEffect } from "react";
+import React, { useCallback, useRef } from "react";
 import Moveable from "react-moveable";
 import { Polygon } from "@/components/parts/Polygon";
 import { Square } from "@/components/parts/Square";
 import { Circle } from "@/components/parts/Circle";
 import { PolygonItems, SquareItems, CircleItems } from "@/components/mypage/create/ItemsCase";
 
+
+export interface onItemUpdateProps { 
+    id: string,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    angle: number,
+    type: 'circle' | 'polygon' | 'square',
+    borderRadius?: string;
+}
+
 export interface ContainerProps {
     items: (PolygonItems | SquareItems | CircleItems)[];
-    onItemUpdate: (
-        id: string,
-        x: number,
-        y: number,
-        width?: number,
-        height?: number,
-        angle?: number,
-        borderRadius?: number
-    ) => void;
+    onItemUpdate: (props: onItemUpdateProps) => void;
     selectedItemId: string | null;
     setSelectedItemId: (id: string | null) => void;
 }
@@ -46,9 +50,12 @@ export function Container({ items, onItemUpdate, selectedItemId, setSelectedItem
                                 position: "absolute",
                                 left: `${item.x}px`,
                                 top: `${item.y}px`,
-                                height: `${item.height}px`,
-                                width: `${item.width}px`
-                                
+                                maxWidth: "auto",
+                                maxHeight: "auto",
+                                minWidth: "auto",
+                                minHeight: "auto",
+                                backgroundColor: `${item.color}`,
+                                transform: `rotate(${item.angle}deg)`,
                             }}
                             onClick={(e) => handleItemClick(e, item.id)}
                         >
@@ -57,12 +64,11 @@ export function Container({ items, onItemUpdate, selectedItemId, setSelectedItem
                                     width={item.width}
                                     height={item.height}
                                     unit="px"
-                                    color={item.color}
                                     border={item.border}
                                     borderColor={item.borderColor}
                                     opacity={item.opacity}
-                                    sides={(item as PolygonItems).sides}
-                                    angleOffset={(item as PolygonItems).angleOffset}
+                                    sides={item.sides}
+                                    angle={item.angle}
                                 />
                             )}
                             {item.type === "square" && (
@@ -70,15 +76,11 @@ export function Container({ items, onItemUpdate, selectedItemId, setSelectedItem
                                     width={item.width}
                                     height={item.height}
                                     unit="px"
-                                    radiusTopLeft={(item as SquareItems).radiusTopLeft}
-                                    radiusTopRight={(item as SquareItems).radiusTopRight}
-                                    radiusBottomLeft={(item as SquareItems).radiusBottomLeft}
-                                    radiusBottomRight={(item as SquareItems).radiusBottomRight}
-                                    color={item.color}
+                                    borderRadius={item.borderRadius}
                                     border={item.border}
                                     borderColor={item.borderColor}
                                     opacity={item.opacity}
-                                    angle={(item as SquareItems).angle}
+                                    angle={item.angle}
                                 />
                             )}
                             {item.type === "circle" && (
@@ -86,11 +88,10 @@ export function Container({ items, onItemUpdate, selectedItemId, setSelectedItem
                                     width={item.width}
                                     height={item.height}
                                     unit="px"
-                                    color={item.color}
                                     border={item.border}
                                     borderColor={item.borderColor}
                                     opacity={item.opacity}
-                                    angle={(item as CircleItems).angle}
+                                    angle={item.angle}
                                 />
                             )}
                         </div>
@@ -98,40 +99,117 @@ export function Container({ items, onItemUpdate, selectedItemId, setSelectedItem
                             target={itemRefs.current[item.id]}
                             draggable={true}
                             resizable={true}
+                            rotatable={true}
+                            roundable={item.type === "square"}
+                            isDisplayShadowRoundControls={true}
+                            roundClickable={"control"}
+                            roundPadding={15}
                             keepRatio={false}
                             throttleDrag={0}
                             throttleResize={0}
+                            throttleRotate={0}
+                            throttleRounda={0}
                             renderDirections={["nw","n","ne","w","e","sw","s","se"]}
+                            onDragStart={() => {
+                                setSelectedItemId(null);
+                            }}
                             onDrag={(e) => {
-                                e.target.style.transform = e.transform;
+                                e.target.style.transform = e.transform;     
                             }}
                             onDragEnd={(e) => {
-                                const transformValue = e.target.style.transform;
-                                const regex = /translate\(([-\d.]+)px,\s*([-\d.]+)px\)/;
-                                const match = transformValue.match(regex);
-
-                                if (match) {
-                                    const x = parseFloat(match[1]);
-                                    const y = parseFloat(match[2]);
-                                    onItemUpdate(item.id, item.x + x, item.y + y);
-                                    e.target.style.transform = '';
+                                const { translate } = e.lastEvent || [0, 0];
+                                if (translate) {
+                                    const [x, y] = translate;
+                                    onItemUpdate({
+                                        id: item.id,
+                                        x: item.x + x,
+                                        y: item.y + y,
+                                        width: item.width,
+                                        height: item.height,
+                                        angle: item.angle,
+                                        type: item.type,
+                                    });
+                                    e.target.style.left = `${item.x + x}px`;
+                                    e.target.style.top = `${item.y + y}px`;
+                                    const currentTransform = e.target.style.transform;
+                                    const newTransform = currentTransform.replace(/translate\([^)]*\)/, '').trim();
+                                    e.target.style.transform = newTransform;
                                 }
                             }}
+                            onRotateStart={() => {
+                                setSelectedItemId(null);
+                            }}
                             onResize={(e) => {
-                                const newWidth = e.width;
-                                const newHeight = e.height;
-                                const beforeTranslate = e.drag.beforeTranslate;
-                        
-                                e.target.style.width = `${newWidth}px`;
-                                e.target.style.height = `${newHeight}px`;
-                                e.target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`;
-                                onItemUpdate(
-                                    item.id,
-                                    item.x + beforeTranslate[0],
-                                    item.y + beforeTranslate[1],
-                                    newWidth,
-                                    newHeight
-                                );
+                                e.target.style.width = `${e.width}px`;
+                                e.target.style.height = `${e.height}px`;
+                                e.target.style.transform = e.drag.transform;                                
+                            }}
+                            onResizeEnd={(e) => {
+                                const { lastEvent } = e;
+                                
+                                if (lastEvent) {
+                                    const { width, height } = lastEvent;
+                                    const rect = e.target.getBoundingClientRect();
+                                    const newX = rect.left;
+                                    const newY = rect.top;
+
+                                    console.log(rect)
+                                    onItemUpdate({
+                                        id: item.id,
+                                        x: newX,
+                                        y: newY,
+                                        width: width || item.width,
+                                        height: height || item.height,
+                                        angle: item.angle,
+                                        type: item.type,
+                                    });
+                                    e.target.style.left = `${newX}px`;
+                                    e.target.style.top = `${newY}px`;
+                                    const currentTransform = e.target.style.transform;
+                                    const newTransform = currentTransform.replace(/translate\([^)]*\)/, '').trim();
+                                    e.target.style.transform = newTransform;
+                                }
+                                
+                            }}
+                            onRotate={e => {
+                                e.target.style.transform = e.transform;
+                            }}
+                            onRotateEnd={e => {
+                                const angle = e.lastEvent?.rotate || item.angle;                      
+                                onItemUpdate({
+                                    id: item.id,
+                                    x: item.x,
+                                    y: item.y,
+                                    width: item.width,
+                                    height: item.height,
+                                    angle: angle,
+                                    type: item.type,
+                                });
+                            }}
+                            roundableOptions={{
+                                minRadius: 0,
+                                maxRadius: 100,
+                                positions: ["tl", "tr", "bl", "br"]
+                            }}
+                            
+                            
+                            onRound={e => {
+                                console.log("ROUND", e.borderRadius);
+                                e.target.style.borderRadius = e.borderRadius;
+                            }}
+
+                            onRoundEnd={e => {
+                                const borderRadius = e.lastEvent?.borderRadius;
+                                onItemUpdate({
+                                    id: item.id,
+                                    x: item.x,
+                                    y: item.y,
+                                    width: item.width,
+                                    height: item.height,
+                                    angle: item.angle,
+                                    type: item.type,
+                                    borderRadius: borderRadius,
+                                });
                             }}
                         />
                     </React.Fragment>

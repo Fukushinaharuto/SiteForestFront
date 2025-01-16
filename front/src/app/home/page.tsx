@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Moveable from "react-moveable";
+import { Square } from "@/components/parts/Square";
 
 // アイテムの型定義
 interface Item {
@@ -28,7 +29,7 @@ export default function App() {
     };
 
     return (
-        <div>
+        <div className="w-full h-full relative">
             <div>
                 {items.map(item => {
                     // 各アイテムに対するrefを作成または取得
@@ -38,10 +39,16 @@ export default function App() {
 
                     return (
                         <div >
+                            <div style={{background: "black",
+                                        borderRadius:"",
+                                        height: "40px",
+                                        width: "40px",
+                                        }}
+                            />
                             <div key={item.id} ref={itemRefs.current[item.id]} style={{
                                 position: 'absolute',
                                 // 他のスタイルプロパティをここに追加
-                                background: "red",
+                                backgroundColor: "red",
                             }}>
                                 {item.content}
                             </div>
@@ -49,6 +56,11 @@ export default function App() {
                                 target={itemRefs.current[item.id]}
                                 draggable={true}
                                 resizable={true}
+                                rotatable={true}
+                                roundable={true}
+                                isDisplayShadowRoundControls={true}
+                                roundClickable={"control"}
+                                roundPadding={15}
                                 keepRatio={false}
                                 throttleResize={1}
                                 renderDirections={["nw","n","ne","w","e","sw","s","se"]}
@@ -59,6 +71,21 @@ export default function App() {
                                 }}
                                 onDrag={e => {
                                     e.target.style.transform = e.transform;
+                                }}
+                                onRotate={e => {
+                                    e.target.style.transform = e.transform;
+                                }}
+
+                                roundableOptions={{
+                                    minRadius: 0,
+                                    maxRadius: 100,
+                                    positions: ["tl", "tr", "bl", "br"]
+                                }}
+                                
+                                
+                                onRound={e => {
+                                    console.log("ROUND", e.borderRadius);
+                                    e.target.style.borderRadius = e.borderRadius;
                                 }}
                             />
                         </div>

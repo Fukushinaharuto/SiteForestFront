@@ -2,7 +2,7 @@ interface RightSideProps {
     selectedItem?: {
         id: string;
         type: string;
-        color: string;
+        color?: string;
         height: number;
         width: number;
         opacity: number;

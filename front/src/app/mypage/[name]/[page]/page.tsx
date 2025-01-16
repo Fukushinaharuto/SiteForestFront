@@ -3,18 +3,19 @@
 import { useEffect, useState } from "react";
 import { LeftSide } from "@/components/mypage/create/LeftSide";
 import { RightSide } from "@/components/mypage/create/RightSide";
-import { Container } from "@/components/mypage/create/Container";
+import { Container, onItemUpdateProps } from "@/components/mypage/create/Container";
 import { DndContext } from "@dnd-kit/core";
 import { Droppable } from "@/components/mypage/create/dnd/Droppable";
 import { DragStartEvent, DragEndEvent, UniqueIdentifier } from "@dnd-kit/core";
 import { DroppedArea } from "@/components/mypage/create/DroppedArea"
 import { DragOver } from "@/components/mypage/create/DragOver";
 import { ItemsCase } from "@/components/mypage/create/ItemsCase"
-import { PolygonItems, SquareItems, CircleItems } from "@/components/mypage/create/ItemsCase"
+import { PolygonItems, SquareItems, CircleItems, ItemType } from "@/components/mypage/create/ItemsCase"
 import { useParams, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { ProjectName } from "@/api/ProjectName";
 import { VerifyToken } from "@/api/VerifyToken";
+
 
 export default function Page() {
     const [droppedItems, setDroppedItems] = useState<(PolygonItems | SquareItems | CircleItems)[]>([]);
@@ -33,7 +34,6 @@ export default function Page() {
         const Verify = async() => {
             const response = await useVerifyToken();
             if (response) {
-                console.log(response.tokenExists);
                 setCheckToken(true)
             } else {
                 Cookies.remove('AuthToken', { path: '/' });
@@ -89,29 +89,38 @@ export default function Page() {
         if (over?.id === "droppable") {
             const dropPosition = DroppedArea(active, "droppable-container");
             if (!dropPosition) return;
-            
             try {
                 const newItem = ItemsCase(
-                    active.id,
+                    active.id as ItemType,
                     dropPosition.finalX,
                     dropPosition.finalY
                 );
-                setDroppedItems((prevItems) => [...prevItems, newItem]);
+                setDroppedItems((prevItems) => [...prevItems, newItem as PolygonItems | SquareItems | CircleItems]);
             } catch (error) {
                 console.error(error);
             }
         }
     };
 
-    const onItemUpdate = (id: string, x: number, y: number, width?: number, height?: number) => {
+    const onItemUpdate = ({ id, x, y, width, height, angle, type, borderRadius }: onItemUpdateProps) => {
         setDroppedItems((prevItems) =>
             prevItems.map((item) =>
                 item.id === id
-                    ? { ...item, x, y, ...(width && { width }), ...(height && { height }) }
+                    ? { 
+                        ...item, 
+                        x, 
+                        y, 
+                        width, 
+                        height, 
+                        angle, 
+                        ...(type === "square" && borderRadius !== undefined
+                        ? { borderRadius }
+                        : "")
+                    }
                     : item
             )
         );
-    };    
+    }; 
     
     const selectedItem = droppedItems.find((item) => item.id === selectedItemId);
 

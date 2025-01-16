@@ -2,15 +2,15 @@ export interface PolygonProps {
     width: number;
     height: number;
     unit: string;
-    color: string;
+    color?: string;
     border: number;
     borderColor: string;
     opacity: number;
     sides: number;
-    angleOffset: number;
+    angle: number;
 }
 
-export function Polygon({ width, height, unit, color, border, borderColor, opacity, sides, angleOffset }: PolygonProps): JSX.Element {
+export function Polygon({ width, height, unit, color, border, borderColor, opacity, sides, angle }: PolygonProps): JSX.Element {
     const generatePolygonPoints = (sides: number, angleOffset: number): string => {
         const points: string[] = [];
         const angleStep = (2 * Math.PI) / sides;
@@ -24,7 +24,7 @@ export function Polygon({ width, height, unit, color, border, borderColor, opaci
         return points.join(", ");
     };
 
-    const polygonPoints = generatePolygonPoints(sides, angleOffset);
+    const polygonPoints = generatePolygonPoints(sides, angle);
 
     return (
         <div

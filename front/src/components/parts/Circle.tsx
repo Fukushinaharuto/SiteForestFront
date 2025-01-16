@@ -1,5 +1,5 @@
 export interface CircleProps{
-    color: string;
+    color?: string;
     width: number;
     height: number;
     unit: string;
@@ -18,7 +18,7 @@ export function Circle({ color, width, height, unit, border, borderColor, opacit
                 borderRadius: "60px 60px 60px 60px",
                 border: `${border}px solid ${borderColor}`,
                 opacity: opacity/100, 
-                transform: `rotate(${angle}deg)`,
+                transform: `rotate(${angle}°)`,
             }}
         ></div>
     )

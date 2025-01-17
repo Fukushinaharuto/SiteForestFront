@@ -40,7 +40,7 @@ export default function App() {
                     return (
                         <div >
                             <div style={{background: "black",
-                                        borderRadius:"",
+                                        borderRadius:"146px / 146px 146px 146px 55px",
                                         height: "40px",
                                         width: "40px",
                                         }}
@@ -86,6 +86,7 @@ export default function App() {
                                 onRound={e => {
                                     console.log("ROUND", e.borderRadius);
                                     e.target.style.borderRadius = e.borderRadius;
+                                    console.log(e.borderRadius)
                                 }}
                             />
                         </div>

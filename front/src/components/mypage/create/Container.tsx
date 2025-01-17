@@ -129,6 +129,7 @@ export function Container({ items, onItemUpdate, selectedItemId, setSelectedItem
                                         angle: item.angle,
                                         type: item.type,
                                     });
+                                    console.log(item.x+x, item.y+y)
                                     e.target.style.left = `${item.x + x}px`;
                                     e.target.style.top = `${item.y + y}px`;
                                     const currentTransform = e.target.style.transform;
@@ -149,11 +150,17 @@ export function Container({ items, onItemUpdate, selectedItemId, setSelectedItem
                                 
                                 if (lastEvent) {
                                     const { width, height } = lastEvent;
-                                    const rect = e.target.getBoundingClientRect();
-                                    const newX = rect.left;
-                                    const newY = rect.top;
-
-                                    console.log(rect)
+                                    const transform = e.target.style.transform;
+                                    const matches = transform.match(/translate\((-?\d+(?:\.\d+)?)px, (-?\d+(?:\.\d+)?)px\)/);
+                                    
+                                    let newX = item.x;
+                                    let newY = item.y;
+                                    
+                                    if (matches) {
+                                        newX += parseFloat(matches[1]);
+                                        newY += parseFloat(matches[2]);
+                                    }
+                                    console.log(newX,newY)
                                     onItemUpdate({
                                         id: item.id,
                                         x: newX,
@@ -175,7 +182,7 @@ export function Container({ items, onItemUpdate, selectedItemId, setSelectedItem
                                 e.target.style.transform = e.transform;
                             }}
                             onRotateEnd={e => {
-                                const angle = e.lastEvent?.rotate || item.angle;                      
+                                const angle = e.lastEvent?.rotate || item.angle;               
                                 onItemUpdate({
                                     id: item.id,
                                     x: item.x,

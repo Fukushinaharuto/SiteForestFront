@@ -154,7 +154,6 @@ export default function Page() {
                         <Container
                             items={droppedItems}
                             onItemUpdate={onItemUpdate}
-                            selectedItemId={selectedItemId}
                             setSelectedItemId={setSelectedItemId}
                         />    
                     </div>

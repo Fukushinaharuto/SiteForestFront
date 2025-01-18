@@ -79,6 +79,7 @@ export function LeftSide({ setIsLeftSideOpen }: LeftSideProps){
                                             />
                                         </Draggable>
                                     </li>
+                                    <p className="text-text text-xs">丸と多角形は製作中</p>
                                 </ul>
                             </div>
                         )}

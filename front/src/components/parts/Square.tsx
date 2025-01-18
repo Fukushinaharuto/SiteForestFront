@@ -3,7 +3,7 @@ export interface SquareProps{
     width: number;
     height: number;
     unit: string;
-    borderRadius: string;
+    borderRadius?: string;
     border: number;
     borderColor: string;
     opacity: number;
@@ -16,11 +16,11 @@ export function Square({ color, width, height, unit, borderRadius, border, borde
             style={{
                 backgroundColor: color,
                 width: `${width}${unit}`,
-                height: `${height}px`,
+                height: `${height}${unit}`,
                 borderRadius: borderRadius,
                 border: `${border}px solid ${borderColor}`,
                 opacity: opacity/100, 
-                transform: `rotate(${angle}°)`,
+                transform: `rotate(${angle}deg)`,
             }}
         ></div>
     )

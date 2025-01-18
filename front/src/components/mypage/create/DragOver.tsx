@@ -27,7 +27,7 @@ export function DragOver({ activeDragItem }: { activeDragItem: UniqueIdentifier 
                     height={50}
                     unit="px"
                     borderRadius="0px"
-                    color="#3498db"
+                    color="#cc0066"
                     border={0}
                     borderColor=""
                     opacity={100}

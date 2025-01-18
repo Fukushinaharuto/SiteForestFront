@@ -27,6 +27,7 @@ export default function App() {
             item.id === id ? { ...item, ...updates } : item
         ));
     };
+    const [a, setA] = React.useState("");
 
     return (
         <div className="w-full h-full relative">
@@ -39,16 +40,22 @@ export default function App() {
 
                     return (
                         <div >
-                            <div style={{background: "black",
-                                        borderRadius:"146px / 146px 146px 146px 55px",
-                                        height: "40px",
-                                        width: "40px",
-                                        }}
-                            />
+                            <Square
+                                    color="black"
+                                    width={40}
+                                    height={40}
+                                    unit="px"
+                                    borderRadius={a}
+                                    border={0}
+                                    borderColor=""
+                                    opacity={100}
+                                    angle={0}
+                                />
                             <div key={item.id} ref={itemRefs.current[item.id]} style={{
                                 position: 'absolute',
                                 // 他のスタイルプロパティをここに追加
                                 backgroundColor: "red",
+                                borderRadius:"146px / 146px 146px 146px 55px",
                             }}>
                                 {item.content}
                             </div>
@@ -86,7 +93,7 @@ export default function App() {
                                 onRound={e => {
                                     console.log("ROUND", e.borderRadius);
                                     e.target.style.borderRadius = e.borderRadius;
-                                    console.log(e.borderRadius)
+                                    setA(e.borderRadius)
                                 }}
                             />
                         </div>

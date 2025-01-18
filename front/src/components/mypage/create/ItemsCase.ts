@@ -49,7 +49,7 @@ export function ItemsCase(type: ItemType, x: number, y: number):DroppedItems {
                 width: 50,
                 height: 50,
                 unit: "px",
-                color:"#3498db",
+                color:"#cc0066",
                 borderRadius: "0px",
                 border:0,
                 borderColor:"#3498db",

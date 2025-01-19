@@ -2,6 +2,7 @@ import { Polygon }  from "@/components/parts/Polygon";
 import { Draggable } from '@/components/mypage/create/dnd/Draggable';
 import { Square } from "@/components/parts/Square";
 import { Circle } from "@/components/parts/Circle";
+import { Text } from "@/components/parts/Text";
 import { useState } from "react";
 
 export interface LeftSideProps {
@@ -57,7 +58,7 @@ export function LeftSide({ setIsLeftSideOpen }: LeftSideProps){
                                                 height={50}
                                                 unit="px"
                                                 borderRadius="0px"
-                                                color="#3498db"
+                                                color="#cc0066"
                                                 border={0}
                                                 borderColor=""
                                                 opacity={100}
@@ -83,6 +84,16 @@ export function LeftSide({ setIsLeftSideOpen }: LeftSideProps){
                                 </ul>
                             </div>
                         )}
+                    </li>
+                    <li className="py-1 relative">
+                        <Draggable id="text">
+                            テキスト
+                        </Draggable>
+                    </li>
+                    <li className="py-1 relative">
+                        <Draggable id="hyperLink">
+                            リンク
+                        </Draggable>
                     </li>
                 </ul>
 

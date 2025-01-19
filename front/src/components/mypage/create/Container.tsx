@@ -3,7 +3,9 @@ import Moveable from "react-moveable";
 import { Polygon } from "@/components/parts/Polygon";
 import { Square } from "@/components/parts/Square";
 import { Circle } from "@/components/parts/Circle";
-import { PolygonItems, SquareItems, CircleItems } from "@/components/mypage/create/ItemsCase";
+import { Text } from "@/components/parts/Text";
+import { PolygonItems, SquareItems, CircleItems, TextItems, HyperLinkItems } from "@/components/mypage/create/ItemsCase";
+import { HyperLink } from "@/components/parts/HyperLink";
 
 
 export interface onItemUpdateProps { 
@@ -13,12 +15,12 @@ export interface onItemUpdateProps {
     width: number,
     height: number,
     angle: number,
-    type: 'circle' | 'polygon' | 'square',
+    type: 'circle' | 'polygon' | 'square' | 'text' | 'hyperLink',
     borderRadius?: string;
 }
 
 export interface ContainerProps {
-    items: (PolygonItems | SquareItems | CircleItems)[];
+    items: (PolygonItems | SquareItems | CircleItems | TextItems | HyperLinkItems)[];
     onItemUpdate: (props: onItemUpdateProps) => void;
     setSelectedItemId: (id: string | null) => void;
 }
@@ -100,6 +102,42 @@ export function Container({ items, onItemUpdate, setSelectedItemId }: ContainerP
                                     opacity={item.opacity}
                                     angle={item.angle}
                                 />
+                            )}
+                            {item.type === "text" && (
+                                <Text
+                                    width={item.width}
+                                    height={item.height}
+                                    unit="px"
+                                    border={item.border}
+                                    borderColor={item.borderColor}
+                                    opacity={item.opacity}
+                                    angle={item.angle}
+                                    textColor={item.textColor}
+                                    size={item.size}
+                                    textAlign={item.textAlign}
+                                    verticalAlign={item.verticalAlign}
+                                >
+                                    テキスト
+                                </Text>
+                            )}
+                            {item.type === "hyperLink" && (
+                                <HyperLink
+                                    width={item.width}
+                                    height={item.height}
+                                    unit="px"
+                                    border={item.border}
+                                    borderColor={item.borderColor}
+                                    opacity={item.opacity}
+                                    angle={item.angle}
+                                    textColor={item.textColor}
+                                    size={item.size}
+                                    textAlign={item.textAlign}
+                                    verticalAlign={item.verticalAlign}
+                                    href={item.href}
+                                    isLink='no'
+                            >
+                                リンク
+                            </HyperLink>
                             )}
                         </div>
                         {selectedMoveableId === item.id && (

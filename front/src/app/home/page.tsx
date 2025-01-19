@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import Moveable from "react-moveable";
-import { Square } from "@/components/parts/Square";
+import { Text } from "@/components/parts/Text";
+import { HyperLink } from "@/components/parts/HyperLink";
 
 // アイテムの型定義
 interface Item {
@@ -40,17 +41,26 @@ export default function App() {
 
                     return (
                         <div >
-                            <Square
-                                    color="black"
-                                    width={40}
-                                    height={40}
-                                    unit="px"
-                                    borderRadius={a}
-                                    border={0}
-                                    borderColor=""
-                                    opacity={100}
-                                    angle={0}
-                                />
+                            <HyperLink
+                                color="black"
+                                width={40}
+                                height={80}
+                                unit="px"
+                                borderRadius={a}
+                                border={0}
+                                borderColor=""
+                                opacity={100}
+                                angle={0}
+                                textColor="white"
+                                size={5}
+                                textAlign = 'right'
+                                verticalAlign = 'middle'
+                                href="/mypage"
+                                isLink="no"
+                            >
+                                おはよう
+                            </HyperLink>
+
                             <div key={item.id} ref={itemRefs.current[item.id]} style={{
                                 position: 'absolute',
                                 // 他のスタイルプロパティをここに追加

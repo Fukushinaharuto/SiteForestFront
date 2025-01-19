@@ -9,8 +9,7 @@ import { Droppable } from "@/components/mypage/create/dnd/Droppable";
 import { DragStartEvent, DragEndEvent, UniqueIdentifier } from "@dnd-kit/core";
 import { DroppedArea } from "@/components/mypage/create/DroppedArea"
 import { DragOver } from "@/components/mypage/create/DragOver";
-import { ItemsCase } from "@/components/mypage/create/ItemsCase"
-import { PolygonItems, SquareItems, CircleItems, ItemType } from "@/components/mypage/create/ItemsCase"
+import { PolygonItems, SquareItems, CircleItems, ItemType, ItemsCase, TextItems, HyperLinkItems  } from "@/components/mypage/create/ItemsCase"
 import { useParams, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { ProjectName } from "@/api/ProjectName";
@@ -18,7 +17,7 @@ import { VerifyToken } from "@/api/VerifyToken";
 
 
 export default function Page() {
-    const [droppedItems, setDroppedItems] = useState<(PolygonItems | SquareItems | CircleItems)[]>([]);
+    const [droppedItems, setDroppedItems] = useState<(PolygonItems | SquareItems | CircleItems | TextItems | HyperLinkItems)[]>([]);
     const [isLeftSideOpen, setIsLeftSideOpen] = useState(true);
     const [isRightSideOpen, setIsRightSideOpen] = useState(true);
     const [activeDragItem, setActiveDragItem] = useState<UniqueIdentifier | null>(null);
@@ -95,7 +94,7 @@ export default function Page() {
                     dropPosition.finalX,
                     dropPosition.finalY
                 );
-                setDroppedItems((prevItems) => [...prevItems, newItem as PolygonItems | SquareItems | CircleItems]);
+                setDroppedItems((prevItems) => [...prevItems, newItem as PolygonItems | SquareItems | CircleItems | TextItems | HyperLinkItems]);
             } catch (error) {
                 console.error(error);
             }

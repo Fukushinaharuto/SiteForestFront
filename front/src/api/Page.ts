@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 export interface PageProps {
     name: string;
-    description?: string;
+    page: string;
 }
 
 export interface  UpdateItemPosition {
@@ -13,12 +13,13 @@ export interface  UpdateItemPosition {
     size?: { width: number; height: number }
 }
 
-export async function Page({ name }:PageProps ) {
+export async function Page({ name, page }:PageProps ) {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/page`;
     const Token = Cookies.get('AuthToken');
     try{
         const response = await axios.post(api_url, {
                 name,
+                page,
             },
             {
                 headers: {
@@ -27,8 +28,8 @@ export async function Page({ name }:PageProps ) {
             }
         );
         return response.data;
-        
     } catch (error) {
+        
         if (axios.isAxiosError(error)) {
             throw error.response;
         }

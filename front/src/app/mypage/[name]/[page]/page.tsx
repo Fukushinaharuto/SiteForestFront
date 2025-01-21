@@ -22,11 +22,13 @@ export default function Page() {
     const [isRightSideOpen, setIsRightSideOpen] = useState(true);
     const [activeDragItem, setActiveDragItem] = useState<UniqueIdentifier | null>(null);
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-    const { name: encodedName, page } = useParams();
+    const { name: encodedName, page: encodedPage } = useParams();
     const name = decodeURIComponent(encodedName as string);
+    const page = decodeURIComponent(encodedPage as string);
     const Token = Cookies.get('AuthToken');
     const router = useRouter();
     const [checkToken, setCheckToken] = useState(false);
+    const [checkUrl, setCheckUrl] = useState(false);
 
     const { useVerifyToken } = VerifyToken();
     useEffect(() => {
@@ -57,13 +59,19 @@ export default function Page() {
         }
     }, [droppedItems, LOCAL_STORAGE_KEY]);
 
-    const checkProject = ProjectName();
+    const checkProject = ProjectName({ name });
     useEffect(() => {
         const checkName = async() => {
             const response = await checkProject();
+            
             if (response && response.name) {
                 if (response.name.some(projectName => projectName === name)) {
-                    return;
+                    if (response.page.some(projectPage => projectPage === page)) {
+                        setCheckUrl(true)
+                        return;
+                    } else {
+                        router.push(`/mypage/${name}/home`)
+                    }
                 } else {
                     router.push("/mypage");
                 }
@@ -72,7 +80,7 @@ export default function Page() {
             }
         }    
         checkName();
-    }, [Token, name, checkProject]);
+    }, [Token, name, checkProject, page]);
 
     const handleDragStart = (event:DragStartEvent) => {
         setIsLeftSideOpen(false);
@@ -111,7 +119,7 @@ export default function Page() {
                         y, 
                         width, 
                         height, 
-                        angle, 
+                        ...(angle !== undefined && {angle} ),
                         ...(type === "square" && borderRadius !== undefined
                         ? { borderRadius }
                         : "")
@@ -132,10 +140,10 @@ export default function Page() {
         );
     };
 
-    if (!checkToken) {
+    if (!(checkToken && checkUrl)) {
         return (
             <div className="flex justify-center items-center h-screen">
-                <div className="square-spin-3"></div>
+                <div className="circle-packman-1"></div>
             </div>
         );
     }

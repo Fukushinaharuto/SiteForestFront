@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Page } from "@/api/Page"
+import { useParams } from "next/navigation";
 
 interface RightSideProps {
     selectedItem?: {
@@ -10,7 +12,7 @@ interface RightSideProps {
         opacity: number;
         border: number;
         borderColor: string;
-        angle: number;
+        angle?: number;
         textColor?: string;
         size?: number;
         textAlign?: 'left' | 'center' | 'right';
@@ -22,6 +24,9 @@ interface RightSideProps {
 
 export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }: RightSideProps) {
     const [pageOpen, setPageOpen] = useState(true);
+    const [page, setPage] = useState("");
+    const { name: encodedName } = useParams();
+    const name = decodeURIComponent(encodedName as string);
 
     const handleNumberChange = (property: string, value: string, min: number, max: number) => {
         const numValue = Number(value);
@@ -29,6 +34,10 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
             onPropertyChange(property as keyof typeof selectedItem, numValue);
         }
     };
+
+    const pageAdd = async() => {
+        const response = await Page({ name, page  });
+    }
 
 
     return (
@@ -45,12 +54,14 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
                     <label htmlFor="text-lg mt-4">新しいページ</label>
                     <input 
                         type="text"
-                        className="mt-4"
-                        
+                        className="mt-4 text-text"
+                        onChange={(e) => setPage(e.target.value)} 
+                        value={page}    
                     />
                     <div className="flex justify-end">
                         <button 
                             className="bg-sub p-1 text-sm w-[40%] mt-2 rounded"
+                            onClick={pageAdd}
                         >
                             作成する
                         </button>
@@ -67,9 +78,10 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
             {selectedItem && (
                 <div>
                     <h2 className="text-xl font-bold mt-6 mb-4">プロパティ設定</h2>
-                    <div>
-                        <h3 className="text-lg font-bold mt-6 mb-4 text-white">テキスト</h3>
-                        <div className="flex flex-col items-center text-text">
+                    {selectedItem.type === 'hyperLink' &&
+                        <div>
+                            <h3 className="text-lg font-bold mt-6 mb-4 text-white">リンク</h3>
+                            <div className="flex flex-col items-center text-text">
                                 <div className="space-y-4 w-full max-w-xs">
                                     <div className="flex flex-col">
                                         <label className="text-lg text-white">カラー</label>
@@ -82,7 +94,8 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
                                     </div>                  
                                 </div>
                             </div>
-                    </div>
+                        </div>
+                    }
                     {(selectedItem.type === 'text' || selectedItem.type === 'hyperLink') &&
                         <div>
                             <h3 className="text-lg font-bold mt-6 mb-4 text-white">テキスト</h3>

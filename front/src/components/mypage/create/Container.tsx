@@ -14,7 +14,7 @@ export interface onItemUpdateProps {
     y: number,
     width: number,
     height: number,
-    angle: number,
+    angle?: number,
     type: 'circle' | 'polygon' | 'square' | 'text' | 'hyperLink',
     borderRadius?: string;
 }
@@ -111,7 +111,6 @@ export function Container({ items, onItemUpdate, setSelectedItemId }: ContainerP
                                     border={item.border}
                                     borderColor={item.borderColor}
                                     opacity={item.opacity}
-                                    angle={item.angle}
                                     textColor={item.textColor}
                                     size={item.size}
                                     textAlign={item.textAlign}
@@ -128,7 +127,6 @@ export function Container({ items, onItemUpdate, setSelectedItemId }: ContainerP
                                     border={item.border}
                                     borderColor={item.borderColor}
                                     opacity={item.opacity}
-                                    angle={item.angle}
                                     textColor={item.textColor}
                                     size={item.size}
                                     textAlign={item.textAlign}

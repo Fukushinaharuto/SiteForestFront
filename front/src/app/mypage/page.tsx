@@ -46,7 +46,7 @@ export default function Page() {
     if (!checkToken) {
         return (
             <div className="flex justify-center items-center h-screen">
-                <div className="square-spin-3"></div>
+                <div className="circle-packman-1"></div>
             </div>
         );
     }

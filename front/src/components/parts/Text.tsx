@@ -7,7 +7,7 @@ export interface TextProps{
     border: number;
     borderColor: string;
     opacity: number;
-    angle: number;
+    angle?: number;
     textColor: string;
     size: number;
     font?: string;

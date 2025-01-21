@@ -116,7 +116,7 @@ export function Container({ items, onItemUpdate, setSelectedItemId }: ContainerP
                                     textAlign={item.textAlign}
                                     verticalAlign={item.verticalAlign}
                                 >
-                                    テキスト
+                                    {item.children}
                                 </Text>
                             )}
                             {item.type === "hyperLink" && (
@@ -134,7 +134,7 @@ export function Container({ items, onItemUpdate, setSelectedItemId }: ContainerP
                                     href={item.href}
                                     isLink='no'
                             >
-                                リンク
+                                {item.children}
                             </HyperLink>
                             )}
                         </div>

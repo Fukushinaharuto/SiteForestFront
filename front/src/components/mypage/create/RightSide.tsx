@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Page } from "@/api/Page"
-import { useParams } from "next/navigation";
+import { useState, useEffect } from "react";
+import { Page, PageIndex } from "@/api/Page"
+import { useParams, useRouter } from "next/navigation";
 
 interface RightSideProps {
     selectedItem?: {
@@ -17,8 +17,11 @@ interface RightSideProps {
         size?: number;
         textAlign?: 'left' | 'center' | 'right';
         verticalAlign?: 'top' | 'middle' | 'bottom';
+        isList? : 'text' | 'no' | 'back'; 
+        href?: string;
+        children?: string;
     };
-    onPropertyChange: (property: 'color' | 'height' | 'width' | 'angle' | 'opacity' | 'border' | 'borderColor' | 'textColor' | 'size' | 'textAlign' | 'verticalAlign', value: string | number) => void;
+    onPropertyChange: (property: 'color' | 'height' | 'width' | 'angle' | 'opacity' | 'border' | 'borderColor' | 'textColor' | 'size' | 'textAlign' | 'verticalAlign' | 'isList' | 'href' | 'children', value: string | number) => void;
     setIsRightSideOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -27,6 +30,11 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
     const [page, setPage] = useState("");
     const { name: encodedName } = useParams();
     const name = decodeURIComponent(encodedName as string);
+    const [error, setError] = useState("");
+    const [isError, setIsError] = useState(true);
+    const [pages, setPages] = useState([]);
+    const [selectedPage, setSelectedPage] = useState("");
+    const router = useRouter();
 
     const handleNumberChange = (property: string, value: string, min: number, max: number) => {
         const numValue = Number(value);
@@ -37,7 +45,28 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
 
     const pageAdd = async() => {
         const response = await Page({ name, page  });
+        if (!response.success) {
+            setError(response.error.message);
+            setIsError(false);
+        } else {
+            setIsError(true)
+        }
+        return;
     }
+
+    useEffect(() => {
+        const PageList = async() => {
+            const response = await PageIndex({name});
+            setPages(response.pages || []);
+        }
+        PageList()
+    }, [name]);
+
+    const handlePageJump = () => {
+        if (selectedPage) {
+            router.push(`/mypage/${name}/${selectedPage}`);
+        }
+    };
 
 
     return (
@@ -58,6 +87,9 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
                         onChange={(e) => setPage(e.target.value)} 
                         value={page}    
                     />
+                    {!isError && 
+                        <div className="mt-3 rounded-md text-error text-[12px] bg-white">{error}</div>
+                    }
                     <div className="flex justify-end">
                         <button 
                             className="bg-sub p-1 text-sm w-[40%] mt-2 rounded"
@@ -67,11 +99,26 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
                         </button>
                     </div>
                     <label className="text-lg mt-4">ページ遷移</label>
-                    <input
-                        type="text"
-                        onChange={(e) => onPropertyChange("color", e.target.value)}
-                        className="mt-4"
-                    />
+                    <select
+                        onChange={(e) => setSelectedPage(e.target.value)}
+                        className="mt-4 text-text"
+                        value={selectedPage}
+                    >
+                        <option value="" disabled>ページ選択</option>
+                        {pages.map((page) => (
+                            <option key={page} value={page}>
+                                {page}
+                            </option>
+                        ))}
+                    </select>
+                    <div className="flex justify-end">
+                        <button
+                            className="bg-accent p-1 text-sm w-[40%] mt-2 rounded"
+                            onClick={handlePageJump}
+                        >
+                            遷移
+                        </button>
+                    </div>
                 </div>
             }
 
@@ -84,14 +131,30 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
                             <div className="flex flex-col items-center text-text">
                                 <div className="space-y-4 w-full max-w-xs">
                                     <div className="flex flex-col">
-                                        <label className="text-lg text-white">カラー</label>
-                                        <input
-                                            type="color"
-                                            value={selectedItem.textColor}
-                                            onChange={(e) => onPropertyChange("textColor", e.target.value)}
-                                            className="ml-5 w-[80%] mt-4"
-                                        />
-                                    </div>                  
+                                        <label className="text-lg text-white">リンクの指定</label>
+                                        <select
+                                            value={selectedItem.isList}
+                                            onChange={(e) => onPropertyChange("isList", e.target.value)}
+                                            className="ml-5 w-[80%] mt-4 text-right"
+                                        >
+                                            <option value="text">テキストに適用</option>
+                                            <option value="back">背景に適用</option>
+                                        </select>
+                                    </div>   
+                                    <div className="flex flex-col">
+                                        <label className="text-lg text-white">リンク先</label>
+                                        <select
+                                            value={selectedItem.href}
+                                            onChange={(e) => onPropertyChange("href", e.target.value)}
+                                            className="ml-5 w-[80%] mt-4 text-right"
+                                        >
+                                            {pages.map((page) => (
+                                                <option key={page} value={page}>
+                                                    {page}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>                   
                                 </div>
                             </div>
                         </div>
@@ -101,6 +164,15 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
                             <h3 className="text-lg font-bold mt-6 mb-4 text-white">テキスト</h3>
                             <div className="flex flex-col items-center text-text">
                                 <div className="space-y-4 w-full max-w-xs">
+                                    <div className="flex flex-col">
+                                        <label className="text-lg text-white">中身</label>
+                                        <input
+                                            type="text"
+                                            value={selectedItem.children}
+                                            onChange={(e) => onPropertyChange("children", e.target.value)}
+                                            className="ml-5 w-[80%] mt-4 text-right"
+                                        />
+                                    </div>
                                     <div className="flex flex-col">
                                         <label className="text-lg text-white">カラー</label>
                                         <input

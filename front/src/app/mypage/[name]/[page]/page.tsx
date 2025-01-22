@@ -30,14 +30,13 @@ export default function Page() {
     const [checkToken, setCheckToken] = useState(false);
     const [checkUrl, setCheckUrl] = useState(false);
 
-    const { useVerifyToken } = VerifyToken();
     useEffect(() => {
         if (!Token) {
             router.push("/login");
             return;
         }
         const Verify = async() => {
-            const response = await useVerifyToken();
+            const response = await VerifyToken();
             if (response) {
                 setCheckToken(true)
             } else {

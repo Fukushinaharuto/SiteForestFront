@@ -15,11 +15,10 @@ export default function Page() {
     const Token = Cookies.get("AuthToken");
     const router = useRouter();
     const [checkToken, setCheckToken] = useState(false);
-    const { useVerifyToken } = VerifyToken();
 
     useEffect(() => {
         const Verify = async() => {
-            const response = await useVerifyToken();
+            const response = await VerifyToken();
             if (response) {
                 setCheckToken(true)
             } else {

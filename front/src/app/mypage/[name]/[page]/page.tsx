@@ -32,6 +32,10 @@ export default function Page() {
 
     const { useVerifyToken } = VerifyToken();
     useEffect(() => {
+        if (!Token) {
+            router.push("/login");
+            return;
+        }
         const Verify = async() => {
             const response = await useVerifyToken();
             if (response) {
@@ -42,6 +46,8 @@ export default function Page() {
             }
         }
         Verify()
+        
+
     }, [VerifyToken, Token, router]);
 
 

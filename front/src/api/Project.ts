@@ -70,8 +70,7 @@ export async function ProjectIndex({ setCheckToken }: ProjectIndexProps): Promis
             },
         })
         return response.data;
-    } catch (error) {
-        console.log(error)
+    } catch {
         setCheckToken(false)
         return null;
     }
@@ -115,8 +114,7 @@ export async function ProjectDestroy({ setIds, idArray }: ProjectDestroyProps): 
         );
         setIds([])
         return response.data;
-    } catch (error) {
-        console.log(error)
+    } catch {
         return {message:"削除に失敗しました。"};
     }
 }

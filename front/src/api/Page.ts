@@ -50,8 +50,7 @@ export async function PageIndex({name}:PageIndexProps){
             },
         });
         return response.data;
-    } catch (error) {
-        console.log(error)
+    } catch {
         return;
     }
 }

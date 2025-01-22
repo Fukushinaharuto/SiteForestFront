@@ -13,7 +13,7 @@ interface ProjectDeleteProps {
 export function ProjectDelete({ ids, setIds, setIsDeleteModal, setIsDeleteOpen }: ProjectDeleteProps) {
     const handleDelete = async () => {
         const idArray = ids.map(item => item.id);
-        const response = await ProjectDestroy({ setIds, idArray});
+        await ProjectDestroy({ setIds, idArray});
         ids.forEach(project => {
             Object.keys(localStorage).forEach(key => {
                 if (key.startsWith(`${project.name}_`)) {

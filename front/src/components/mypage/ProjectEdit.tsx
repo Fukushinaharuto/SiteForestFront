@@ -28,7 +28,7 @@ export function ProjectEdit({ project, closeModal }: ProjectEditProps) {
 
     const handleSave = async () => {
         try {
-            const response = await ProjectUpdate({ id: project.id, name, description });
+            await ProjectUpdate({ id: project.id, name, description });
             if (name !== project.name) {
                 updateLocalStorage(project.name, name);
             }

@@ -22,6 +22,7 @@ export function PageName() {
         });
             return response.data;
         } catch (error) {
+            console.log(error)
             router.push('/mypage');
             return null;
         }

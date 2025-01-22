@@ -1,7 +1,6 @@
 import { ProjectIndexResponse } from "@/api/Project"
 import { CharacterLimit } from "@/components/mypage/CharacterLimit";
 import Link from "next/link";
-import { useState } from "react";
 
 export interface ProjectValueProps {
     value: ProjectIndexResponse;

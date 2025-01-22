@@ -2,7 +2,6 @@ import { Polygon }  from "@/components/parts/Polygon";
 import { Draggable } from '@/components/mypage/create/dnd/Draggable';
 import { Square } from "@/components/parts/Square";
 import { Circle } from "@/components/parts/Circle";
-import { Text } from "@/components/parts/Text";
 import { useState } from "react";
 
 export interface LeftSideProps {

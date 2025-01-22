@@ -19,7 +19,7 @@ interface RightSideProps {
         verticalAlign?: 'top' | 'middle' | 'bottom';
         isList? : 'text' | 'no' | 'back'; 
         href?: string;
-        children?: string;
+        children?: React.ReactNode;
     };
     onPropertyChange: (property: 'color' | 'height' | 'width' | 'angle' | 'opacity' | 'border' | 'borderColor' | 'textColor' | 'size' | 'textAlign' | 'verticalAlign' | 'isList' | 'href' | 'children', value: string | number) => void;
     setIsRightSideOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,7 +32,7 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
     const name = decodeURIComponent(encodedName as string);
     const [error, setError] = useState("");
     const [isError, setIsError] = useState(true);
-    const [pages, setPages] = useState([]);
+    const [pages, setPages] = useState<string[]>([]);
     const [selectedPage, setSelectedPage] = useState("");
     const router = useRouter();
 
@@ -43,16 +43,18 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
         }
     };
 
-    const pageAdd = async() => {
-        const response = await Page({ name, page  });
+    const pageAdd = async () => {
+        const response = await Page({ name, page });
         if (!response.success) {
             setError(response.error.message);
             setIsError(false);
         } else {
-            setIsError(true)
+            setIsError(true);
+            setPages((prevPages) => [...prevPages, page]);
+            setSelectedPage(page);
         }
         return;
-    }
+    };
 
     useEffect(() => {
         const PageList = async() => {
@@ -60,7 +62,7 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
             setPages(response.pages || []);
         }
         PageList()
-    }, [name]);
+    }, [name, setSelectedPage]);
 
     const handlePageJump = () => {
         if (selectedPage) {
@@ -168,7 +170,6 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
                                         <label className="text-lg text-white">中身</label>
                                         <input
                                             type="text"
-                                            value={selectedItem.children}
                                             onChange={(e) => onPropertyChange("children", e.target.value)}
                                             className="ml-5 w-[80%] mt-4 text-right"
                                         />

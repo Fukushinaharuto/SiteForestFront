@@ -73,7 +73,12 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
 
     return (
         <div className="w-[200px] bg-gray-800 text-white p-4 fixed top-0 right-0 h-screen overflow-auto z-10">
-            <button onClick={() => setIsRightSideOpen(false)}>閉じる</button>
+            <div className="flex justify-between mb-3">
+                <button onClick={() => setIsRightSideOpen(false)}>閉じる</button>
+                <button className="bg-sub text-white text-md px-2 py-1 rounded-md">
+                    保存
+                </button>
+            </div>
             <h2 
                 className="text-xl font-bold"
                 onClick={() => setPageOpen(!pageOpen)}

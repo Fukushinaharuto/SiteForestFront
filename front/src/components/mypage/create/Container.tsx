@@ -39,7 +39,7 @@ export function Container({ items, onItemUpdate, setSelectedItemId }: ContainerP
 
     return (
         <div
-            className="w-full h-full overflow-auto relative"
+            className="h-full w-full overflow-hidden relative aspect-[16/9]"
             onClick={() => {
                 setSelectedItemId(null);
                 setSelectedMoveableId(null);
@@ -63,7 +63,7 @@ export function Container({ items, onItemUpdate, setSelectedItemId }: ContainerP
                                 backgroundColor: `${item.color}`,
                                 transform: `rotate(${item.angle}deg)`,
                                 ...(item.type === "square" && { borderRadius: item.borderRadius }),
-                                border: hoveredItemId === item.id ? "2px dashed #007BFF" : "none",
+                                border: hoveredItemId === item.id ? "1px dashed #007BFF" : "none",
                             }}
                             onClick={(e) => handleItemClick(e, item.id)}
                             onMouseEnter={() => setHoveredItemId(item.id)}
@@ -144,6 +144,7 @@ export function Container({ items, onItemUpdate, setSelectedItemId }: ContainerP
                                 draggable={true}
                                 resizable={true}
                                 rotatable={true}
+                                bounds={{ left: 0, top: 0, right: window.innerWidth, bottom: window.innerHeight }}
                                 roundable={item.type === "square"}
                                 isDisplayShadowRoundControls={true}
                                 roundClickable={"control"}

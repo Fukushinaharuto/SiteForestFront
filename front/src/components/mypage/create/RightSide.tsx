@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Page, PageIndex } from "@/api/Page"
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link"
 
 interface RightSideProps {
     selectedItem?: {
@@ -17,19 +18,20 @@ interface RightSideProps {
         size?: number;
         textAlign?: 'left' | 'center' | 'right';
         verticalAlign?: 'top' | 'middle' | 'bottom';
-        isList? : 'text' | 'no' | 'back'; 
+        isLink? : 'text' | 'no' | 'back'; 
         href?: string;
         children?: React.ReactNode;
     };
-    onPropertyChange: (property: 'color' | 'height' | 'width' | 'angle' | 'opacity' | 'border' | 'borderColor' | 'textColor' | 'size' | 'textAlign' | 'verticalAlign' | 'isList' | 'href' | 'children', value: string | number) => void;
+    onPropertyChange: (property: 'color' | 'height' | 'width' | 'angle' | 'opacity' | 'border' | 'borderColor' | 'textColor' | 'size' | 'textAlign' | 'verticalAlign' | 'isLink' | 'href' | 'children', value: string | number) => void;
     setIsRightSideOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }: RightSideProps) {
     const [pageOpen, setPageOpen] = useState(true);
     const [page, setPage] = useState("");
-    const { name: encodedName } = useParams();
+    const { name: encodedName, page: encodedPage } = useParams();
     const name = decodeURIComponent(encodedName as string);
+    const pageName = decodeURIComponent(encodedPage as string);
     const [error, setError] = useState("");
     const [isError, setIsError] = useState(true);
     const [pages, setPages] = useState<string[]>([]);
@@ -70,12 +72,24 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
         }
     };
 
+    const handleSave = () => {
+
+    }
 
     return (
-        <div className="w-[200px] bg-gray-800 text-white p-4 fixed top-0 right-0 h-screen overflow-auto z-10">
+        <div className="w-[240px] bg-gray-800 text-white p-4 fixed top-0 right-0 h-screen overflow-auto z-10">
             <div className="flex justify-between mb-3">
                 <button onClick={() => setIsRightSideOpen(false)}>閉じる</button>
-                <button className="bg-sub text-white text-md px-2 py-1 rounded-md">
+                <Link 
+                    href={`/mypage/preview/${name}/${pageName}`} prefetch 
+                    className=" bg-accent text-white text-md px-2 py-1 rounded-md"
+                >
+                    プレビュー
+                </Link>
+                <button 
+                    className="bg-sub text-white text-md px-2 py-1 rounded-md"
+                    onClick={() => handleSave}
+                >
                     保存
                 </button>
             </div>
@@ -140,8 +154,8 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
                                     <div className="flex flex-col">
                                         <label className="text-lg text-white">リンクの指定</label>
                                         <select
-                                            value={selectedItem.isList}
-                                            onChange={(e) => onPropertyChange("isList", e.target.value)}
+                                            value={selectedItem.isLink}
+                                            onChange={(e) => onPropertyChange("isLink", e.target.value)}
                                             className="ml-5 w-[80%] mt-4 text-right"
                                         >
                                             <option value="text">テキストに適用</option>

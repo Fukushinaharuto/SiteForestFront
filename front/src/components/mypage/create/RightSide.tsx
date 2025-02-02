@@ -248,7 +248,12 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
                                     onChange={(e) => onPropertyChange("color", e.target.value)}
                                     className="ml-5 w-[80%] mt-4"
                                 />
-
+                                <button
+                                    className="text-text bg-white w-[40%] rounded-md ml-5 mt-4"
+                                    onClick={(e) => onPropertyChange("color", "")}
+                                >
+                                    カラーなし
+                                </button>
                             </div>
                             <div className="flex flex-col">
                                 <label>横幅</label>

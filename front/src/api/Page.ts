@@ -23,7 +23,11 @@ export async function Page({ name, page }:PageProps ) {
     try {
         const response = await axios.post(
             api_url,
-            { name, page },
+            { 
+                name,
+                page,
+                
+            },
             {
                 headers: {
                     Authorization: `Bearer ${Token}`,

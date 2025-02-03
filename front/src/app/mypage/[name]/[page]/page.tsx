@@ -14,6 +14,7 @@ import { useParams, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { ProjectName } from "@/api/ProjectName";
 import { VerifyToken } from "@/api/VerifyToken";
+import { PageComponent } from "@/api/PageComponent";
 
 
 export default function Page() {
@@ -145,6 +146,16 @@ export default function Page() {
         );
     };
 
+    const handleSave = async() => {
+        const response = await PageComponent({ name, page, droppedItems });
+        if (response.success) {
+            alert(response.data);
+            console.log("成功")
+        } else {
+            console.log("エラー")
+        }
+    };
+
     if (!(checkToken && checkUrl)) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -179,6 +190,7 @@ export default function Page() {
                     selectedItem={selectedItem}
                     onPropertyChange={handlePropertyChange}
                     setIsRightSideOpen={setIsRightSideOpen}
+                    handleSave={handleSave}
                 />
             )}
         </div>

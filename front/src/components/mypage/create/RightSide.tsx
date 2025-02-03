@@ -24,9 +24,10 @@ interface RightSideProps {
     };
     onPropertyChange: (property: 'color' | 'height' | 'width' | 'angle' | 'opacity' | 'border' | 'borderColor' | 'textColor' | 'size' | 'textAlign' | 'verticalAlign' | 'isLink' | 'href' | 'children', value: string | number) => void;
     setIsRightSideOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    handleSave:() => void;
 }
 
-export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }: RightSideProps) {
+export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen, handleSave }: RightSideProps) {
     const [pageOpen, setPageOpen] = useState(true);
     const [page, setPage] = useState("");
     const { name: encodedName, page: encodedPage } = useParams();
@@ -72,10 +73,6 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
         }
     };
 
-    const handleSave = () => {
-
-    }
-
     return (
         <div className="w-[240px] bg-gray-800 text-white p-4 fixed top-0 right-0 h-screen overflow-auto z-10">
             <div className="flex justify-between mb-3">
@@ -88,7 +85,7 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen }
                 </Link>
                 <button 
                     className="bg-sub text-white text-md px-2 py-1 rounded-md"
-                    onClick={() => handleSave}
+                    onClick={handleSave}
                 >
                     保存
                 </button>

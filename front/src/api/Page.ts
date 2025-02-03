@@ -26,7 +26,6 @@ export async function Page({ name, page }:PageProps ) {
             { 
                 name,
                 page,
-                
             },
             {
                 headers: {

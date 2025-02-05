@@ -29,7 +29,6 @@ export async function PageComponent({ name, page, droppedItems }:PageComponentPr
         );
         return { success: true, data: response.data };
     } catch (error) {
-        console.log(name, page, droppedItems)
         console.log(error)
         return { success: false, error: '保存に失敗しました。' };
     }

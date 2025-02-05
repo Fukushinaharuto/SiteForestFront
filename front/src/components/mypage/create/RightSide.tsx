@@ -5,7 +5,7 @@ import Link from "next/link"
 
 interface RightSideProps {
     selectedItem?: {
-        id: string;
+        id: number;
         type: string;
         color?: string;
         height: number;

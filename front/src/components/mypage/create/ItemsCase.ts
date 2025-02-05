@@ -7,7 +7,7 @@ import { HyperLinkProps } from "@/components/parts/HyperLink";
 export type ItemType = "polygon" | "square" | "circle" | "text" | "hyperLink";
 
 export interface DroppedItems {
-    id: string;
+    id: number;
     x: number;
     y: number;
 }
@@ -38,7 +38,7 @@ export function ItemsCase(type: ItemType, x: number, y: number):DroppedItems {
     switch (type) {
         case "polygon":
             return {
-                id: `polygon-${Date.now()}`,
+                id: Date.now(),
                 x,
                 y,
                 width: 50,
@@ -53,7 +53,7 @@ export function ItemsCase(type: ItemType, x: number, y: number):DroppedItems {
             } as PolygonItems;
         case "square":
             return {
-                id: `square-${Date.now()}`,
+                id: Date.now(),
                 x,
                 y,
                 width: 50,
@@ -69,7 +69,7 @@ export function ItemsCase(type: ItemType, x: number, y: number):DroppedItems {
             } as SquareItems;
         case "circle":
             return {
-                id: `circle-${Date.now()}`,
+                id: Date.now(),
                 x,
                 y,
                 width:50,
@@ -84,7 +84,7 @@ export function ItemsCase(type: ItemType, x: number, y: number):DroppedItems {
             } as CircleItems;
         case "text":
             return {
-                id: `text-${Date.now()}`,
+                id: Date.now(),
                 x,
                 y,
                 width: 50,
@@ -102,7 +102,7 @@ export function ItemsCase(type: ItemType, x: number, y: number):DroppedItems {
             } as TextItems;
             case "hyperLink":
                 return {
-                    id: `hyperLink-${Date.now()}`,
+                    id: Date.now(),
                     x,
                     y,
                     width: 50,

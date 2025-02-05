@@ -22,7 +22,7 @@ export default function Page() {
     const [isLeftSideOpen, setIsLeftSideOpen] = useState(true);
     const [isRightSideOpen, setIsRightSideOpen] = useState(true);
     const [activeDragItem, setActiveDragItem] = useState<UniqueIdentifier | null>(null);
-    const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+    const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
     const { name: encodedName, page: encodedPage } = useParams();
     const name = decodeURIComponent(encodedName as string);
     const page = decodeURIComponent(encodedPage as string);

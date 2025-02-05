@@ -9,7 +9,7 @@ import { HyperLink } from "@/components/parts/HyperLink";
 
 
 export interface onItemUpdateProps { 
-    id: string,
+    id: number,
     x: number,
     y: number,
     width: number,
@@ -22,15 +22,15 @@ export interface onItemUpdateProps {
 export interface ContainerProps {
     items: (PolygonItems | SquareItems | CircleItems | TextItems | HyperLinkItems)[];
     onItemUpdate: (props: onItemUpdateProps) => void;
-    setSelectedItemId: (id: string | null) => void;
+    setSelectedItemId: (id: number | null) => void;
 }
 
 export function Container({ items, onItemUpdate, setSelectedItemId }: ContainerProps) {
     const itemRefs = useRef<{[key: string]: React.RefObject<HTMLDivElement>}>({});
-    const [selectedMoveableId, setSelectedMoveableId] = useState<string | null>(null);
-    const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
+    const [selectedMoveableId, setSelectedMoveableId] = useState<number | null>(null);
+    const [hoveredItemId, setHoveredItemId] = useState<number | null>(null);
 
-    const handleItemClick = useCallback((e: React.MouseEvent, id: string) => {
+    const handleItemClick = useCallback((e: React.MouseEvent, id: number) => {
         e.stopPropagation();
         setSelectedItemId(id);
         setSelectedMoveableId(id);

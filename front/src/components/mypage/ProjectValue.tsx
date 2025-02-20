@@ -1,9 +1,9 @@
-import { ProjectIndexResponse } from "@/api/Project"
+import { ProjectShowResponse } from "@/api/Project"
 import { CharacterLimit } from "@/components/mypage/CharacterLimit";
 import Link from "next/link";
 
 export interface ProjectValueProps {
-    value: ProjectIndexResponse;
+    value: ProjectShowResponse;
     isEditOpen: boolean;
     isDeleteOpen: boolean;
     isSelected: boolean;

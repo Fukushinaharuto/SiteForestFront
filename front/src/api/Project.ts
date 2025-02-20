@@ -6,11 +6,11 @@ export interface ProjectProps {
     description?: string;
 }
 
-export interface ProjectIndexProps {
+export interface ProjectShowProps {
     setCheckToken: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface ProjectIndexResponse {
+export interface ProjectShowResponse {
     id: number;
     name: string;
     description:string;
@@ -59,12 +59,26 @@ export async function Project({ name, description }:ProjectProps ) {
         throw error;
     }
 }
-
-export async function ProjectIndex({ setCheckToken }: ProjectIndexProps): Promise<ProjectIndexResponse[] | null> {
+export async function ProjectIndex() {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project`;
     const Token = Cookies.get('AuthToken');
     try{
-        const response = await axios.get<ProjectIndexResponse[]>(api_url, {
+        const response = await axios.get(api_url, {
+            headers: {
+                Authorization: `Bearer ${Token}`,
+            },
+        })
+        return response.data;
+    } catch {
+        return null;
+    }
+}
+
+export async function ProjectShow({ setCheckToken }: ProjectShowProps): Promise<ProjectShowResponse[] | null> {
+    const api_url = `${process.env.NEXT_PUBLIC_API_URL}/project/show`;
+    const Token = Cookies.get('AuthToken');
+    try{
+        const response = await axios.get<ProjectShowResponse[]>(api_url, {
             headers: {
                 Authorization: `Bearer ${Token}`,
             },

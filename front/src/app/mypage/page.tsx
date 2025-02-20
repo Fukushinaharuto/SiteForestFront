@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { ProjectList } from "@/components/mypage/ProjectList";
 import { ProjectEdit } from "@/components/mypage/ProjectEdit";
-import { ProjectIndexResponse } from "@/api/Project";
+import { ProjectShowResponse } from "@/api/Project";
 import Image from "next/image";
 import { ProjectDelete } from "@/components/mypage/ProjectDelete";
 import { IdsProps } from "@/api/Project";
@@ -32,7 +32,7 @@ export default function Page() {
     
 
     const [isEditOpen, setIsEditOpen] = useState(false);
-    const [selectedProject, setSelectedProject] = useState<ProjectIndexResponse | null>(null);
+    const [selectedProject, setSelectedProject] = useState<ProjectShowResponse | null>(null);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [isDeleteModal, setIsDeleteModal] = useState(false);
     const [ids, setIds] = useState<IdsProps[]>([]);

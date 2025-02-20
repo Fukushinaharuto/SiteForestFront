@@ -100,7 +100,7 @@ export default function Page() {
 
     return(
         <div>
-            <div className="relative w-full h-scree">
+            <div className="relative w-screen h-screen overflow-hidden">
                 {previewHeader ? 
                 
                 <div className="fixed top-0 left-0 w-full bg-baseC border-b-2 border-text h-[70px] z-10">

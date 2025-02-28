@@ -1,12 +1,19 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { PolygonItems, SquareItems, CircleItems, ItemType, ItemsCase, TextItems, HyperLinkItems  } from "@/components/mypage/create/ItemsCase"
+import { PolygonItems, SquareItems, CircleItems, TextItems, HyperLinkItems  } from "@/components/mypage/create/ItemsCase"
 
 export interface PageComponentProps {
     name: string;
     page: string;
     droppedItems: (PolygonItems | SquareItems | CircleItems | TextItems | HyperLinkItems)[];
 }
+
+export interface PageComponentIndexProps {
+    name: string;
+    page: string;
+}
+
+
 
 
 
@@ -31,5 +38,21 @@ export async function PageComponent({ name, page, droppedItems }:PageComponentPr
     } catch (error) {
         console.log(error)
         return { success: false, error: '保存に失敗しました。' };
+    }
+}
+
+export async function PageComponentIndex({ name, page }: PageComponentIndexProps) {
+    const api_url = `${process.env.NEXT_PUBLIC_API_URL}/pageComponent`;
+    const Token = Cookies.get('AuthToken');
+    try {
+        const response = await axios.get(api_url, {
+            params: { name, page },
+            headers: {
+                Authorization: `Bearer ${Token}`,
+            },
+        });
+        return response.data;
+    } catch {
+        return null;
     }
 }

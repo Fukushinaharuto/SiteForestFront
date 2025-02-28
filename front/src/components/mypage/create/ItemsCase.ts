@@ -117,8 +117,8 @@ export function ItemsCase(type: ItemType, x: number, y: number):DroppedItems {
                     size:5,
                     textAlign:'right',
                     verticalAlign:'middle',
-                    href: "",
-                    isLink: 'no',
+                    href: "home",
+                    isLink: 'text',
                 } as HyperLinkItems;
         default:
             throw new Error(`Unsupported type: ${type}`);

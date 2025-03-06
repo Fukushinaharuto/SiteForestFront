@@ -28,7 +28,6 @@ export default function Page() {
             const response = await PageComponentIndex({ name, page}) 
             if (response ) {
                 setItems(response.droppedItems);
-                console.log(response.droppedItems)
             }
         }
         Index()

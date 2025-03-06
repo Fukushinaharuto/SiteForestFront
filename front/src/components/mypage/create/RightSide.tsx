@@ -186,6 +186,7 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen, 
                                         <label className="text-lg text-white">中身</label>
                                         <input
                                             type="text"
+                                            value={(selectedItem.children as string) || ""}
                                             onChange={(e) => onPropertyChange("children", e.target.value)}
                                             className="ml-5 w-[80%] mt-4 text-right"
                                         />

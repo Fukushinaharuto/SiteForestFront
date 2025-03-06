@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 import Moveable from "react-moveable";
 import { Polygon } from "@/components/parts/Polygon";
 import { Square } from "@/components/parts/Square";
@@ -23,12 +23,29 @@ export interface ContainerProps {
     items: (PolygonItems | SquareItems | CircleItems | TextItems | HyperLinkItems)[];
     onItemUpdate: (props: onItemUpdateProps) => void;
     setSelectedItemId: (id: number | null) => void;
+    onItemDelete: (id: number) => void;
 }
 
-export function Container({ items, onItemUpdate, setSelectedItemId }: ContainerProps) {
+export function Container({ items, onItemUpdate, setSelectedItemId, onItemDelete }: ContainerProps) {
     const itemRefs = useRef<{[key: string]: React.RefObject<HTMLDivElement>}>({});
     const [selectedMoveableId, setSelectedMoveableId] = useState<number | null>(null);
     const [hoveredItemId, setHoveredItemId] = useState<number | null>(null);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if ((e.key === "Delete" || (e.key === "Backspace")) && selectedMoveableId !== null) {
+                onItemDelete(selectedMoveableId);
+                setSelectedItemId(null);
+                setSelectedMoveableId(null);
+            }
+            
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [selectedMoveableId, onItemDelete, setSelectedItemId]);
 
     const handleItemClick = useCallback((e: React.MouseEvent, id: number) => {
         e.stopPropagation();

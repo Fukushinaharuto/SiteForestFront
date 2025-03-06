@@ -13,7 +13,9 @@ import { VerifyToken } from "@/api/VerifyToken";
 import Link from "next/link";
 import Image from "next/image"
 import { PageIndex } from "@/api/Page"
+import { PageComponentIndex } from "@/api/PageComponent";
 
+export type ItemType = PolygonItems | SquareItems | CircleItems | TextItems | HyperLinkItems;
 export default function Page() {
     const [items, setItems] = useState<(PolygonItems | SquareItems | CircleItems | TextItems | HyperLinkItems)[]>([]);
     const Token = Cookies.get('AuthToken');
@@ -28,11 +30,30 @@ export default function Page() {
     const [pages, setPages] = useState<string[]>([]);
 
     useEffect(() => {
-        const storedItems = localStorage.getItem(`${name}_${page}_droppedItems`);
-        if (storedItems) {
-            setItems(JSON.parse(storedItems));
-        }
-    }, []);
+        const loadItems = async () => {
+            const storedItems = localStorage.getItem(`${name}_${page}_droppedItems`);
+            const localItems = storedItems ? JSON.parse(storedItems) : [];
+    
+            const response = await PageComponentIndex({ name, page });
+            const dbItems = response ? response.droppedItems : [];
+    
+            const mergedItems = dbItems.map((dbItem: ItemType) => {
+                const localItem = localItems.find((local: ItemType) => local.id === dbItem.id);
+                return localItem ? { ...dbItem, ...localItem } : dbItem;
+            });
+    
+            localItems.forEach((localItem: ItemType) => {
+                if (!dbItems.some((dbItem: ItemType) => dbItem.id === localItem.id)) {
+                    mergedItems.push(localItem);
+                }
+            });
+            setItems(mergedItems);
+        };
+    
+        loadItems();
+    }, [name, page]);
+    
+    
 
     useEffect(() => {
         if (!Token) {

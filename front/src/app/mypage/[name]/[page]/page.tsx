@@ -149,11 +149,19 @@ export default function Page() {
     const handleSave = async() => {
         const response = await PageComponent({ name, page, droppedItems });
         if (response.success) {
-            alert(response.data);
+            alert("保存に成功しました。");
             console.log("成功")
         } else {
             console.log("エラー")
         }
+    };
+
+    const handleItemDelete = (id: number) => {
+        setDroppedItems(prevItems => {
+            const updatedItems = prevItems.filter(item => item.id !== id);
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedItems)); 
+            return updatedItems;
+        });
     };
 
     if (!(checkToken && checkUrl)) {
@@ -178,6 +186,7 @@ export default function Page() {
                             items={droppedItems}
                             onItemUpdate={onItemUpdate}
                             setSelectedItemId={setSelectedItemId}
+                            onItemDelete={handleItemDelete}
                         />    
                     </div>
                 </Droppable>

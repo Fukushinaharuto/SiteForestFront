@@ -8,6 +8,7 @@ export interface TextProps{
     borderColor: string;
     opacity: number;
     angle?: number;
+    zIndex: number;
     textColor: string;
     size: number;
     font?: string;
@@ -15,7 +16,7 @@ export interface TextProps{
     textAlign?: 'left' | 'center' | 'right';
     verticalAlign?: 'top' | 'middle' | 'bottom';
 }
-export function Text({ color, width, height, unit, borderRadius, border, borderColor, opacity, angle, textColor, size, font, children, textAlign = 'left', verticalAlign = 'middle' }:TextProps) {
+export function Text({ color, width, height, unit, borderRadius, border, borderColor, opacity, angle, zIndex, textColor, size, font, children, textAlign = 'left', verticalAlign = 'middle' }:TextProps) {
     
     return(
         <div
@@ -27,6 +28,7 @@ export function Text({ color, width, height, unit, borderRadius, border, borderC
                 border: `${border}px solid ${borderColor}`,
                 opacity: opacity/100, 
                 transform: `rotate(${angle}deg)`,
+                zIndex: zIndex,
                 color: textColor,
                 fontSize: `${size}px`,
                 fontFamily: font,

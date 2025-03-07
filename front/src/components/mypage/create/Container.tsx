@@ -30,7 +30,7 @@ export function Container({ items, onItemUpdate, setSelectedItemId, onItemDelete
     const itemRefs = useRef<{[key: string]: React.RefObject<HTMLDivElement>}>({});
     const [selectedMoveableId, setSelectedMoveableId] = useState<number | null>(null);
     const [hoveredItemId, setHoveredItemId] = useState<number | null>(null);
-
+    
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if ((e.key === "Delete" || (e.key === "Backspace")) && selectedMoveableId !== null) {
@@ -81,6 +81,7 @@ export function Container({ items, onItemUpdate, setSelectedItemId, onItemDelete
                                 transform: `rotate(${item.angle}deg)`,
                                 ...(item.type === "square" && { borderRadius: item.borderRadius }),
                                 border: hoveredItemId === item.id ? "1px dashed #007BFF" : "none",
+                                zIndex: `${item.zIndex}`,
                             }}
                             onClick={(e) => handleItemClick(e, item.id)}
                             onMouseEnter={() => setHoveredItemId(item.id)}
@@ -96,6 +97,7 @@ export function Container({ items, onItemUpdate, setSelectedItemId, onItemDelete
                                     opacity={item.opacity}
                                     sides={item.sides}
                                     angle={item.angle}
+                                    zIndex={item.zIndex}
                                 />
                             )}
                             {item.type === "square" && (
@@ -107,6 +109,7 @@ export function Container({ items, onItemUpdate, setSelectedItemId, onItemDelete
                                     borderColor={item.borderColor}
                                     opacity={item.opacity}
                                     angle={0}
+                                    zIndex={item.zIndex}
                                 />
                             )}
                             {item.type === "circle" && (
@@ -118,6 +121,7 @@ export function Container({ items, onItemUpdate, setSelectedItemId, onItemDelete
                                     borderColor={item.borderColor}
                                     opacity={item.opacity}
                                     angle={item.angle}
+                                    zIndex={item.zIndex}
                                 />
                             )}
                             {item.type === "text" && (
@@ -132,6 +136,7 @@ export function Container({ items, onItemUpdate, setSelectedItemId, onItemDelete
                                     size={item.size}
                                     textAlign={item.textAlign}
                                     verticalAlign={item.verticalAlign}
+                                    zIndex={item.zIndex}
                                 >
                                     {item.children}
                                 </Text>
@@ -150,6 +155,7 @@ export function Container({ items, onItemUpdate, setSelectedItemId, onItemDelete
                                     verticalAlign={item.verticalAlign}
                                     href={item.href}
                                     isLink='no'
+                                    zIndex={item.zIndex}
                             >
                                 {item.children}
                             </HyperLink>

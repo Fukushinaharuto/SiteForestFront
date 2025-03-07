@@ -21,7 +21,7 @@ export function LeftSide({ setIsLeftSideOpen }: LeftSideProps){
     }
     return(
         <div>
-            <div className="w-[150px] bg-gray-800 text-white p-4 fixed top-0 left-0 h-screen z-10">
+            <div className="w-[150px] bg-gray-800 text-white p-4 fixed top-0 left-0 h-screen z-[10000]">
                 <button onClick={() => setIsLeftSideOpen(false)}>閉じる</button>
                 <h2 className="text-lg font-bold">パーツ</h2>
                 <ul className="mt-4 space-y-2">
@@ -47,6 +47,7 @@ export function LeftSide({ setIsLeftSideOpen }: LeftSideProps){
                                                 opacity={100}
                                                 sides={5}
                                                 angle={0}
+                                                zIndex={1}
                                             />
                                         </Draggable>
                                     </li>
@@ -62,6 +63,7 @@ export function LeftSide({ setIsLeftSideOpen }: LeftSideProps){
                                                 borderColor=""
                                                 opacity={100}
                                                 angle={0}
+                                                zIndex={1}
                                             />
                                         </Draggable>
                                     </li>
@@ -76,6 +78,7 @@ export function LeftSide({ setIsLeftSideOpen }: LeftSideProps){
                                                 borderColor=""
                                                 opacity={100}
                                                 angle={0}
+                                                zIndex={1}
                                             />
                                         </Draggable>
                                     </li>

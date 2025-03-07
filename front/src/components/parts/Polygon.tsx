@@ -8,9 +8,10 @@ export interface PolygonProps {
     opacity: number;
     sides: number;
     angle: number;
+    zIndex: number;
 }
 
-export function Polygon({ width, height, unit, color, border, borderColor, opacity, sides, angle }: PolygonProps): JSX.Element {
+export function Polygon({ width, height, unit, color, border, borderColor, opacity, sides, angle, zIndex }: PolygonProps): JSX.Element {
     const generatePolygonPoints = (sides: number, angleOffset: number): string => {
         const points: string[] = [];
         const angleStep = (2 * Math.PI) / sides;
@@ -35,6 +36,7 @@ export function Polygon({ width, height, unit, color, border, borderColor, opaci
                 clipPath: `polygon(${polygonPoints})`,
                 border: `${border}px solid ${borderColor}`,
                 opacity: opacity/100,
+                zIndex: zIndex,
             }}
         ></div>
     );

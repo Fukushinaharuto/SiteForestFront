@@ -21,6 +21,7 @@ export function DragOver({ activeDragItem }: { activeDragItem: UniqueIdentifier 
                     opacity={100}
                     sides={5}
                     angle={0}
+                    zIndex={1}
                 />
             )}
             {activeDragItem === "square" && (
@@ -34,6 +35,7 @@ export function DragOver({ activeDragItem }: { activeDragItem: UniqueIdentifier 
                     borderColor=""
                     opacity={100}
                     angle={0}
+                    zIndex={1}
                 />
             )}
             {activeDragItem === "circle" && (
@@ -46,6 +48,7 @@ export function DragOver({ activeDragItem }: { activeDragItem: UniqueIdentifier 
                     borderColor=""
                     opacity={100}
                     angle={0}
+                    zIndex={1}
                 />
             )}
             {activeDragItem == "text" && (
@@ -58,6 +61,7 @@ export function DragOver({ activeDragItem }: { activeDragItem: UniqueIdentifier 
                     borderColor=""
                     opacity={100}
                     angle={0}
+                    zIndex={1}
                     textColor="white"
                     size={5}
                     textAlign="right"
@@ -76,6 +80,7 @@ export function DragOver({ activeDragItem }: { activeDragItem: UniqueIdentifier 
                     borderColor=""
                     opacity={100}
                     angle={0}
+                    zIndex={1}
                     textColor="white"
                     size={5}
                     textAlign="right"

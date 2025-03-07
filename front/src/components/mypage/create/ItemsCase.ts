@@ -34,13 +34,14 @@ export interface HyperLinkItems extends HyperLinkProps, DroppedItems {
 
 
 
-export function ItemsCase(type: ItemType, x: number, y: number):DroppedItems {
+export function ItemsCase(type: ItemType, x: number, y: number,):DroppedItems {
     switch (type) {
         case "polygon":
             return {
                 id: Date.now(),
                 x,
                 y,
+                zIndex: 500,
                 width: 50,
                 height: 50,
                 color:"#3498db",
@@ -56,6 +57,7 @@ export function ItemsCase(type: ItemType, x: number, y: number):DroppedItems {
                 id: Date.now(),
                 x,
                 y,
+                zIndex: 500,
                 width: 50,
                 height: 50,
                 unit: "px",
@@ -72,6 +74,7 @@ export function ItemsCase(type: ItemType, x: number, y: number):DroppedItems {
                 id: Date.now(),
                 x,
                 y,
+                zIndex: 500,
                 width:50,
                 height:50,
                 unit: "px",
@@ -87,6 +90,7 @@ export function ItemsCase(type: ItemType, x: number, y: number):DroppedItems {
                 id: Date.now(),
                 x,
                 y,
+                zIndex: 500,
                 width: 50,
                 height: 50,
                 color:"#cc0066",
@@ -105,6 +109,7 @@ export function ItemsCase(type: ItemType, x: number, y: number):DroppedItems {
                     id: Date.now(),
                     x,
                     y,
+                    zIndex: 500,
                     width: 50,
                     height: 50,
                     color:"#cc0066",

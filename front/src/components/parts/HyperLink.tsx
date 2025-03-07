@@ -11,6 +11,7 @@ export interface HyperLinkProps{
     borderColor: string;
     opacity: number;
     angle?: number;
+    zIndex: number;
     textColor: string;
     size: number;
     font?: string;
@@ -20,7 +21,7 @@ export interface HyperLinkProps{
     href: string;
     isLink: 'text' | 'back' | 'no';
 }
-export function HyperLink({ color, width, height, unit, borderRadius, border, borderColor, opacity, angle, textColor, size, font, children, textAlign = 'left', verticalAlign = 'middle', href, isLink = 'no' }:HyperLinkProps) {
+export function HyperLink({ color, width, height, unit, borderRadius, border, borderColor, opacity, angle, zIndex, textColor, size, font, children, textAlign = 'left', verticalAlign = 'middle', href, isLink = 'no' }:HyperLinkProps) {
     
     return(
         <>
@@ -35,6 +36,7 @@ export function HyperLink({ color, width, height, unit, borderRadius, border, bo
                             border: `${border}px solid ${borderColor}`,
                             opacity: opacity/100, 
                             transform: `rotate(${angle}deg)`,
+                            zIndex: zIndex,
                             color: textColor,
                             fontSize: `${size}px`,
                             fontFamily: font,
@@ -59,6 +61,7 @@ export function HyperLink({ color, width, height, unit, borderRadius, border, bo
                         border: `${border}px solid ${borderColor}`,
                         opacity: opacity/100, 
                         transform: `rotate(${angle}deg)`,
+                        zIndex: zIndex,
                         color: textColor,
                         fontSize: `${size}px`,
                         fontFamily: font,
@@ -84,6 +87,7 @@ export function HyperLink({ color, width, height, unit, borderRadius, border, bo
                         border: `${border}px solid ${borderColor}`,
                         opacity: opacity/100, 
                         transform: `rotate(${angle}deg)`,
+                        zIndex: zIndex,
                         color: textColor,
                         fontSize: `${size}px`,
                         fontFamily: font,

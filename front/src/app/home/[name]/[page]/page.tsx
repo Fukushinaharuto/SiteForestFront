@@ -99,6 +99,7 @@ export default function Page() {
                             backgroundColor: `${item.color}`,
                             transform: `rotate(${item.angle}deg)`,
                             ...(item.type === "square" && { borderRadius: item.borderRadius }),
+                            zIndex: `${item.zIndex}`,
                         }}
                     >
                         {item.type === "polygon" && (
@@ -111,6 +112,7 @@ export default function Page() {
                                 opacity={item.opacity}
                                 sides={item.sides}
                                 angle={item.angle}
+                                zIndex={item.zIndex}
                             />
                         )}
                         {item.type === "square" && (
@@ -122,6 +124,7 @@ export default function Page() {
                                 borderColor={item.borderColor}
                                 opacity={item.opacity}
                                 angle={0}
+                                zIndex={item.zIndex}
                             />
                         )}
                         {item.type === "circle" && (
@@ -133,6 +136,7 @@ export default function Page() {
                                 borderColor={item.borderColor}
                                 opacity={item.opacity}
                                 angle={item.angle}
+                                zIndex={item.zIndex}
                             />
                         )}
                         {item.type === "text" && (
@@ -147,6 +151,7 @@ export default function Page() {
                                 size={item.size}
                                 textAlign={item.textAlign}
                                 verticalAlign={item.verticalAlign}
+                                zIndex={item.zIndex}
                             >
                                 {item.children}
                             </Text>
@@ -165,6 +170,7 @@ export default function Page() {
                                 verticalAlign={item.verticalAlign}
                                 href={item.href}
                                 isLink={item.isLink}
+                                zIndex={item.zIndex}
                             >
                                 {item.children}
                             </HyperLink>

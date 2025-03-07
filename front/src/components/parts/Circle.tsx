@@ -7,8 +7,9 @@ export interface CircleProps{
     borderColor: string;
     opacity: number;
     angle: number;
+    zIndex: number;
 }
-export function Circle({ color, width, height, unit, border, borderColor, opacity, angle }:CircleProps) {
+export function Circle({ color, width, height, unit, border, borderColor, opacity, angle, zIndex }:CircleProps) {
     return(
         <div
             style={{
@@ -19,6 +20,7 @@ export function Circle({ color, width, height, unit, border, borderColor, opacit
                 border: `${border}px solid ${borderColor}`,
                 opacity: opacity/100, 
                 transform: `rotate(${angle}°)`,
+                zIndex: zIndex,
             }}
         ></div>
     )

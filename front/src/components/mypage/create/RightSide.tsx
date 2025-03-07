@@ -14,6 +14,7 @@ interface RightSideProps {
         border: number;
         borderColor: string;
         angle?: number;
+        zIndex: number;
         textColor?: string;
         size?: number;
         textAlign?: 'left' | 'center' | 'right';
@@ -22,12 +23,13 @@ interface RightSideProps {
         href?: string;
         children?: React.ReactNode;
     };
-    onPropertyChange: (property: 'color' | 'height' | 'width' | 'angle' | 'opacity' | 'border' | 'borderColor' | 'textColor' | 'size' | 'textAlign' | 'verticalAlign' | 'isLink' | 'href' | 'children', value: string | number) => void;
+    onPropertyChange: (property: 'color' | 'height' | 'width' | 'angle' | 'zIndex' | 'opacity' | 'border' | 'borderColor' | 'textColor' | 'size' | 'textAlign' | 'verticalAlign' | 'isLink' | 'href' | 'children', value: string | number) => void;
     setIsRightSideOpen: React.Dispatch<React.SetStateAction<boolean>>;
     handleSave:() => void;
+    zIndexList: number[];
 }
 
-export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen, handleSave }: RightSideProps) {
+export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen, handleSave, zIndexList }: RightSideProps) {
     const [pageOpen, setPageOpen] = useState(true);
     const [page, setPage] = useState("");
     const { name: encodedName, page: encodedPage } = useParams();
@@ -73,8 +75,32 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen, 
         }
     };
 
+    const handleZIndexChange = (action: "front" | "back" | "top" | "bottom") => {
+        if (!selectedItem) return;
+        let newZIndex = selectedItem.zIndex;
+    
+        switch (action) {
+            case "front":
+                newZIndex += 1;
+                break;
+            case "back":
+                newZIndex -= 1;
+                break;
+            case "top":
+                newZIndex = Math.max(...zIndexList, 500)+1;
+                break;
+            case "bottom":
+                newZIndex = Math.min(...zIndexList, 500)-1;
+                break;
+        }
+    
+        onPropertyChange("zIndex", newZIndex);
+    };
+    
+    
+
     return (
-        <div className="w-[240px] bg-gray-800 text-white p-4 fixed top-0 right-0 h-screen overflow-auto z-10">
+        <div className="w-[240px] bg-gray-800 text-white p-4 fixed top-0 right-0 h-screen overflow-auto z-[10000]">
             <div className="flex justify-between mb-3">
                 <button onClick={() => setIsRightSideOpen(false)}>閉じる</button>
                 <Link 
@@ -141,7 +167,46 @@ export function RightSide({ selectedItem, onPropertyChange, setIsRightSideOpen, 
             }
 
             {selectedItem && (
-                <div>
+                <div className="mt-3">
+                    {selectedItem && (
+                        <div>
+                            <h3 className="text-lg font-bold mt-6 mb-4 text-white">重なり順</h3>
+                            <div className="grid grid-cols-2 gap-2 justify-center items-center">
+                                <div className="flex justify-center items-center">
+                                    <button 
+                                        onClick={() => handleZIndexChange("top")}
+                                        className="bg-sub px-3 py-1 rounded-lg text-lg"
+                                    >
+                                        最前面
+                                    </button>
+                                </div>
+                                <div className="flex justify-center items-center">
+                                    <button 
+                                        onClick={() => handleZIndexChange("bottom")}
+                                        className="bg-accent px-3 py-1 rounded-lg text-lg"
+                                    >
+                                        最背面
+                                    </button>
+                                </div>
+                                <div className="flex justify-center items-center">
+                                    <button 
+                                        onClick={() => handleZIndexChange("front")}
+                                        className="bg-sub px-5 py-1 rounded-lg text-lg"
+                                    >
+                                        前面
+                                    </button>
+                                </div>
+                                <div className="flex justify-center items-center">
+                                    <button 
+                                        onClick={() => handleZIndexChange("back")}
+                                        className="bg-accent px-5 py-1 rounded-lg text-lg"
+                                    >
+                                        背面
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <h2 className="text-xl font-bold mt-6 mb-4">プロパティ設定</h2>
                     {selectedItem.type === 'hyperLink' &&
                         <div>

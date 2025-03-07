@@ -8,8 +8,9 @@ export interface SquareProps{
     borderColor: string;
     opacity: number;
     angle: number;
+    zIndex: number;
 }
-export function Square({ color, width, height, unit, borderRadius, border, borderColor, opacity, angle }:SquareProps) {
+export function Square({ color, width, height, unit, borderRadius, border, borderColor, opacity, angle, zIndex }:SquareProps) {
     
     return(
         <div
@@ -21,6 +22,7 @@ export function Square({ color, width, height, unit, borderRadius, border, borde
                 border: `${border}px solid ${borderColor}`,
                 opacity: opacity/100, 
                 transform: `rotate(${angle}deg)`,
+                zIndex: zIndex,
             }}
         ></div>
     )

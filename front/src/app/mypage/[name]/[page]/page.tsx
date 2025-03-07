@@ -30,6 +30,7 @@ export default function Page() {
     const router = useRouter();
     const [checkToken, setCheckToken] = useState(false);
     const [checkUrl, setCheckUrl] = useState(false);
+    const [zIndexList, setZIndexList] = useState<number[]>([]);
 
     useEffect(() => {
         if (!Token) {
@@ -87,6 +88,12 @@ export default function Page() {
         }    
         checkName();
     }, [Token, name, checkProject, page]);
+
+    useEffect(() => {
+        const zIndexes = droppedItems.map(item => item.zIndex ?? 0);
+        setZIndexList(zIndexes);
+        console.log(zIndexList)
+    }, [droppedItems]);
 
     const handleDragStart = (event:DragStartEvent) => {
         setIsLeftSideOpen(false);
@@ -200,6 +207,7 @@ export default function Page() {
                     onPropertyChange={handlePropertyChange}
                     setIsRightSideOpen={setIsRightSideOpen}
                     handleSave={handleSave}
+                    zIndexList={zIndexList}
                 />
             )}
         </div>

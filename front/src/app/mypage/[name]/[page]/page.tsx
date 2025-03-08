@@ -14,7 +14,7 @@ import { useParams, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { ProjectName } from "@/api/ProjectName";
 import { VerifyToken } from "@/api/VerifyToken";
-import { PageComponent } from "@/api/PageComponent";
+import { PageComponent, PageComponentDestroy } from "@/api/PageComponent";
 
 
 export default function Page() {
@@ -92,7 +92,6 @@ export default function Page() {
     useEffect(() => {
         const zIndexes = droppedItems.map(item => item.zIndex ?? 0);
         setZIndexList(zIndexes);
-        console.log(zIndexList)
     }, [droppedItems]);
 
     const handleDragStart = (event:DragStartEvent) => {
@@ -163,13 +162,19 @@ export default function Page() {
         }
     };
 
-    const handleItemDelete = (id: number) => {
+    const handleItemDelete = async (id: number) => {
         setDroppedItems(prevItems => {
             const updatedItems = prevItems.filter(item => item.id !== id);
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedItems)); 
             return updatedItems;
         });
+        const storedItems = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "[]");
+        const itemExistsInLocalStorage = storedItems.some((item: { id: number }) => item.id === id);
+        if (!itemExistsInLocalStorage) {
+            await PageComponentDestroy({ id });
+        }
     };
+    
 
     if (!(checkToken && checkUrl)) {
         return (

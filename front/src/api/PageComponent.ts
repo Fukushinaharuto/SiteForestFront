@@ -13,9 +13,9 @@ export interface PageComponentIndexProps {
     page: string;
 }
 
-
-
-
+export interface PageComponentDestroyProps {
+    id: number;
+}
 
 export async function PageComponent({ name, page, droppedItems }:PageComponentProps ) {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/pageComponent`;
@@ -54,5 +54,20 @@ export async function PageComponentIndex({ name, page }: PageComponentIndexProps
         return response.data;
     } catch {
         return null;
+    }
+}
+
+export async function PageComponentDestroy({ id }: PageComponentDestroyProps) {
+    const api_url = `${process.env.NEXT_PUBLIC_API_URL}/pageComponent/${id}`;
+    const Token = Cookies.get('AuthToken');
+    try {
+        const response = await axios.delete(api_url, {
+            headers: {
+                Authorization: `Bearer ${Token}`,
+            },
+        });
+        return;
+    } catch {
+        return;
     }
 }

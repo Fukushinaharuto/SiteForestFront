@@ -6,21 +6,31 @@
 ```
 git clone https://github.com/Fukushinaharuto/SiteForestFront.git
 ```
-2. **Dockerイメージをビルド**
+2. **.env.localファイルの追加**
+- frontフォルダの中に.env.localファイルの作成
+```
+touch ./front/.env.local
+```
+- .env.localファイルの中に下記を記述
+```
+NEXT_PUBLIC_API_URL=http://localhost:8003/api
+```
+
+3. **Dockerイメージをビルド**
 ```
 docker compose build
 ```
-3. **バックエンドコンテナに入る**
+4. **バックエンドコンテナに入る**
 ```
 docker compose run front /bin/bash
 ```
-4. **依存関係をインストール**
+5. **依存関係をインストール**
 - コンテナ内で下記のコマンドを実行します。
 ```
 npm install
 ```
 - 上記のコードを実行後、コンテナを出ます。
-5. **コンテナを起動**
+6. **コンテナを起動**
 ```
 docker compose up -d
 ```
@@ -62,11 +72,8 @@ SiteForest
 
 
 ### 今後作成すること
-- 要素の削除
-- 保存したページの要素の表示(データベースから取り出して)
 - cookiesの有効期限が切れたらTokenを削除する
 - ログアウト機能
-- 要素の重なりの順番入れ替え
 - 色々な要素の追加、例写真など
 
 

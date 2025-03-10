@@ -51,7 +51,18 @@ export async function PageComponentIndex({ name, page }: PageComponentIndexProps
                 Authorization: `Bearer ${Token}`,
             },
         });
-        return response.data;
+        const convertedItems = response.data.droppedItems.map((item: any) => ({
+            ...item,
+            x: parseFloat(item.x),
+            y: parseFloat(item.y),
+            width: parseFloat(item.width),
+            height: parseFloat(item.height),
+            angle: item.angle !== undefined ? parseFloat(item.angle) : undefined,
+            borderRadius: item.borderRadius !== undefined ? parseFloat(item.borderRadius) : undefined,
+            opacity: parseFloat(item.opacity),
+            
+        }));
+        return { ...response.data, droppedItems: convertedItems };
     } catch {
         return null;
     }

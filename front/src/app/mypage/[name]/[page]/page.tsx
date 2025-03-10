@@ -14,7 +14,7 @@ import { useParams, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { ProjectName } from "@/api/ProjectName";
 import { VerifyToken } from "@/api/VerifyToken";
-import { PageComponent, PageComponentDestroy } from "@/api/PageComponent";
+import { PageComponent, PageComponentDestroy, PageComponentIndex } from "@/api/PageComponent";
 
 
 export default function Page() {
@@ -51,6 +51,21 @@ export default function Page() {
 
     }, [VerifyToken, Token, router]);
 
+    useEffect(() => {
+        const Index = async() => {
+            const response = await PageComponentIndex({ name, page}) 
+            if (response ) {
+                console.log("データベースから取得した要素:", response.droppedItems);
+                setDroppedItems(response.droppedItems);
+            }
+        }
+        Index()
+        
+    }, [Token, name, page]);
+
+    useEffect(() => {
+        console.log("データベースから取得した要素:", droppedItems);        
+    }, [droppedItems]);
 
     const LOCAL_STORAGE_KEY = `${name}_${page}_droppedItems`;
     useEffect(() => {
@@ -170,9 +185,9 @@ export default function Page() {
         });
         const storedItems = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "[]");
         const itemExistsInLocalStorage = storedItems.some((item: { id: number }) => item.id === id);
-        if (!itemExistsInLocalStorage) {
+        // if (!itemExistsInLocalStorage) {
             await PageComponentDestroy({ id });
-        }
+        
     };
     
 

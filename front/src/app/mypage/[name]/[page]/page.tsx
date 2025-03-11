@@ -50,30 +50,24 @@ export default function Page() {
         
 
     }, [VerifyToken, Token, router]);
-
-    useEffect(() => {
-        const Index = async() => {
-            const response = await PageComponentIndex({ name, page}) 
-            if (response ) {
-                console.log("データベースから取得した要素:", response.droppedItems);
-                setDroppedItems(response.droppedItems);
-            }
-        }
-        Index()
-        
-    }, [Token, name, page]);
-
-    useEffect(() => {
-        console.log("データベースから取得した要素:", droppedItems);        
-    }, [droppedItems]);
-
     const LOCAL_STORAGE_KEY = `${name}_${page}_droppedItems`;
     useEffect(() => {
         const savedItems = localStorage.getItem(LOCAL_STORAGE_KEY);
         if (savedItems) {
             setDroppedItems(JSON.parse(savedItems));
+        } else {
+            const fetchFromDB = async () => {
+                const response = await PageComponentIndex({ name, page });
+                if (response) {
+                    setDroppedItems(response.droppedItems);
+                }
+            };
+            fetchFromDB();
         }
-    }, [LOCAL_STORAGE_KEY]);
+    }, [LOCAL_STORAGE_KEY, Token, name, page]);
+
+    
+    
     
     useEffect(() => {
         if (droppedItems.length > 0) {
@@ -171,9 +165,9 @@ export default function Page() {
         const response = await PageComponent({ name, page, droppedItems });
         if (response.success) {
             alert("保存に成功しました。");
-            console.log("成功")
+            localStorage.removeItem(LOCAL_STORAGE_KEY);
         } else {
-            console.log("エラー")
+            alert('保存に失敗しました。')
         }
     };
 
@@ -185,8 +179,7 @@ export default function Page() {
         });
         const storedItems = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "[]");
         const itemExistsInLocalStorage = storedItems.some((item: { id: number }) => item.id === id);
-        // if (!itemExistsInLocalStorage) {
-            await PageComponentDestroy({ id });
+        await PageComponentDestroy({ id });
         
     };
     

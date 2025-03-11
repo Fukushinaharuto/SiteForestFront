@@ -17,6 +17,17 @@ export interface PageComponentDestroyProps {
     id: number;
 }
 
+export type DroppedItem = {
+    x: number | string;
+    y: number | string;
+    width: number | string;
+    height: number | string;
+    angle?: number | string;
+    borderRadius?: number | string;
+    opacity?: number | string;
+} & (PolygonItems | SquareItems | CircleItems | TextItems | HyperLinkItems);
+
+
 export async function PageComponent({ name, page, droppedItems }:PageComponentProps ) {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/pageComponent`;
     const Token = Cookies.get('AuthToken');
@@ -51,17 +62,17 @@ export async function PageComponentIndex({ name, page }: PageComponentIndexProps
                 Authorization: `Bearer ${Token}`,
             },
         });
-        const convertedItems = response.data.droppedItems.map((item: any) => ({
+        const convertedItems: DroppedItem[] = response.data.droppedItems.map((item: DroppedItem) => ({
             ...item,
-            x: parseFloat(item.x),
-            y: parseFloat(item.y),
-            width: parseFloat(item.width),
-            height: parseFloat(item.height),
-            angle: item.angle !== undefined ? parseFloat(item.angle) : undefined,
-            borderRadius: item.borderRadius !== undefined ? parseFloat(item.borderRadius) : undefined,
-            opacity: parseFloat(item.opacity),
-            
+            x: typeof item.x === "string" ? parseFloat(item.x) : item.x,
+            y: typeof item.y === "string" ? parseFloat(item.y) : item.y,
+            width: typeof item.width === "string" ? parseFloat(item.width) : item.width,
+            height: typeof item.height === "string" ? parseFloat(item.height) : item.height,
+            angle: typeof item.angle === "string" ? parseFloat(item.angle) : item.angle,
+            borderRadius: typeof item.borderRadius === "string" ? parseFloat(item.borderRadius) : item.borderRadius,
+            opacity: typeof item.opacity === "string" ? parseFloat(item.opacity) : item.opacity,
         }));
+        
         return { ...response.data, droppedItems: convertedItems };
     } catch {
         return null;
